@@ -6,6 +6,8 @@ public class PlayerController : MonoBehaviour
     public float jumpForce;
     public bool doubleJump;
 
+    public bool playerOne;
+
     public bool onTheGround;
     public Transform groundTester;
     public LayerMask layer;
@@ -28,20 +30,47 @@ public class PlayerController : MonoBehaviour
     }
 
     void Movement(){
-        if(Input.GetKey(KeyCode.A) && !onTheGround){
-            transform.Rotate(-0.25f, 0, 0);
-            knockout = -1;
+        //Player one
+        if(Input.GetKey(KeyCode.A) && playerOne && !onTheGround){
+            MovementSequence(-1, -1);
         }
 
-        if(Input.GetKey(KeyCode.D) && !onTheGround){
-            transform.Rotate(0.25f, 0, 0);
-            knockout = 1;
+        if(Input.GetKey(KeyCode.D) && playerOne && !onTheGround){
+            MovementSequence(1, 1);
+        }
+
+        //Player two
+        if(Input.GetKey(KeyCode.LeftArrow) && !playerOne && !onTheGround)
+        {
+            MovementSequence(1, -1);
+        }
+
+        if (Input.GetKey(KeyCode.RightArrow) && !playerOne && !onTheGround)
+        {
+            MovementSequence(-1, 1);
         }
     }
 
+    void MovementSequence(int num1, int num2)
+    {
+        transform.Rotate(0.25f * num1, 0, 0);
+        knockout = 1 * num2;
+    }
+
     void Jump(){
-        if(Input.GetKeyDown(KeyCode.W)){
-            rgBody.AddForce(new Vector2(knockout * jumpForce/10, jumpForce));
+        if(Input.GetKeyDown(KeyCode.W) && playerOne)
+        {
+            JumpSequence();
         }
+
+        if (Input.GetKeyDown(KeyCode.UpArrow) && !playerOne)
+        {
+            JumpSequence();
+        }
+    }
+
+    void JumpSequence()
+    {
+        rgBody.AddForce(new Vector2(knockout * jumpForce / 10, jumpForce));
     }
 }
