@@ -17,6 +17,7 @@ Assets/[Ss]prites/
 Assets/[Ss]ettings/
 Assets/[Ss]cenes
 /[Uu]serSettings/
+Assets/[Mm]odels/
 Assets/[Tt]extMeshPro/
 Assets/[Tt]hirdparty
 
@@ -39,6 +40,7 @@ Assets/[Tt]hirdparty
 ExportedObj/
 .consulo/
 *.csproj
+*.vsconfig
 *.unityproj
 *.sln
 *.suo
@@ -65,6 +67,7 @@ ExportedObj/
 *.Flow
 *.vscode
 *.ttf
+*.physicMaterial
 
 # Unity3D generated meta files
 *.pidb.meta
