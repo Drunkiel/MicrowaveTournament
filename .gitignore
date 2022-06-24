@@ -9,7 +9,7 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Mm]emoryCaptures/
-Assets/[Aa]nimation/
+Assets/[Aa]nimations/
 Assets/[Pp]refabs/
 Assets/[Ss]prites/
 /[Pp]ackages/
@@ -18,7 +18,7 @@ Assets/[Ss]ettings/
 Assets/[Ss]cenes
 /[Uu]serSettings/
 Assets/[Mm]odels/
-Assets/[Tt]extMeshPro/
+Assets/[Tt]extMesh Pro/
 Assets/[Tt]hirdparty
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
