@@ -30,7 +30,7 @@ public class GateController : MonoBehaviour
         }
     }
 
-    void OpenGate()
+    public void OpenGate()
     {
         switch (actualStep)
         {
@@ -57,8 +57,6 @@ public class GateController : MonoBehaviour
             case 5:
                 anim.Play("OpenGate_4");
                 break;
-        }
-            
-                
+        }    
     }
 }
