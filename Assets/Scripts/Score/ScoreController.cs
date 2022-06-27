@@ -10,8 +10,17 @@ public class ScoreController : MonoBehaviour
     public BallController ballController;
 
     //To reset
+    public GameObject[] players;
     public GateController[] gateControllers;
     public int num;
+
+    //To animate
+    SpawnText spawnText;
+
+    void Start()
+    {
+        spawnText = GetComponent<SpawnText>();
+    }
 
     void Update()
     {
@@ -24,22 +33,24 @@ public class ScoreController : MonoBehaviour
         if (forOne)
         {
             scoreForPlayerOne++;
+            spawnText.BlueScored();
         }
         else
         {
             scoreForPlayerTwo++;
+            spawnText.RedScored();
         }
     }
 
     void CheckWinner()
     {
-        if(scoreForPlayerOne >= 8)
+        if (scoreForPlayerOne >= 8)
         {
             num = -1;
             ResetLevel();
         }
 
-        if(scoreForPlayerTwo >= 8)
+        if (scoreForPlayerTwo >= 8)
         {
             num = 1;
             ResetLevel();
@@ -52,9 +63,16 @@ public class ScoreController : MonoBehaviour
         for (int i = 0; i < gateControllers.Length; i++)
         {
             gateControllers[i].cooldown = gateControllers[i].resCooldown;
-            gateControllers[i].actualStep = 0; 
-            gateControllers[i].OpenGate();         
+            gateControllers[i].actualStep = 0;
+            gateControllers[i].OpenGate();
         }
+
+        //Reseting players positions and rotation
+        players[0].transform.position = new Vector3(-7, 0, 0);
+        players[1].transform.position = new Vector3(7, 0, 0);
+
+        players[0].transform.rotation = Quaternion.Euler(0, 90, 0);
+        players[1].transform.rotation = Quaternion.Euler(0, -90, 0);
 
         //Reseting score
         scoreForPlayerOne = 0;
