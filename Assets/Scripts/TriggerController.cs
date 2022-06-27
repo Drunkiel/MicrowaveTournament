@@ -7,7 +7,7 @@ public class TriggerController : MonoBehaviour
 
     void OnTriggerEnter(Collider collider)
     {
-        if (collider.gameObject.CompareTag(Tag))
+        if (collider.CompareTag(Tag))
         {
             isTriggered = true;
         }
@@ -15,7 +15,7 @@ public class TriggerController : MonoBehaviour
 
     void OnTriggerExit(Collider collider)
     {
-        if (collider.gameObject.CompareTag(Tag))
+        if (collider.CompareTag(Tag))
         {
             isTriggered = false;
         }
