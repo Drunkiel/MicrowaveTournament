@@ -33,13 +33,21 @@ public class ScoreController : MonoBehaviour
         if (forOne)
         {
             scoreForPlayerOne++;
+            num = -1;
             spawnText.BlueScored();
         }
         else
         {
             scoreForPlayerTwo++;
+            num = 1;
             spawnText.RedScored();
         }
+
+        //Gate reset
+        ResetGate();
+
+        //Reset ball after getting point
+        ballController.ResetBall(num);
     }
 
     void CheckWinner()
@@ -57,15 +65,20 @@ public class ScoreController : MonoBehaviour
         }
     }
 
-    void ResetLevel()
+    void ResetGate()
     {
-        //Reseting gates
         for (int i = 0; i < gateControllers.Length; i++)
         {
             gateControllers[i].cooldown = gateControllers[i].resCooldown;
             gateControllers[i].actualStep = 0;
             gateControllers[i].OpenGate();
         }
+    }
+
+    void ResetLevel()
+    {
+        //Gate reset
+        ResetGate();
 
         //Reseting players positions and rotation
         players[0].transform.position = new Vector3(-7, 0, 0);
