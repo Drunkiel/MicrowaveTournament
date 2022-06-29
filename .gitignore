@@ -68,6 +68,7 @@ ExportedObj/
 *.vscode
 *.ttf
 *.physicMaterial
+*.blend
 
 # Unity3D generated meta files
 *.pidb.meta
