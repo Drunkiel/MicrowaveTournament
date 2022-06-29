@@ -9,7 +9,7 @@ public class BallController : MonoBehaviour
     void Start()
     {
         rgBody = GetComponent<Rigidbody>();
-        rgBody.AddForce(startVector, ForceMode.Impulse);
+        FirstRound();
     }
 
     void Update()
@@ -19,6 +19,17 @@ public class BallController : MonoBehaviour
         {
             rgBody.velocity = Vector3.ClampMagnitude(rgBody.velocity, 20);
         }
+    }
+
+    void FirstRound()
+    {
+        float num1 = Mathf.Round(Random.Range(-1, 1));
+        float num2 = 0;
+
+        if (num1 >= -1 && num1 < 0) num2 = -1;
+        if (num1 <= 1 && num1 >= 0) num2 = 1;
+
+        rgBody.AddForce(startVector * num2, ForceMode.Impulse);
     }
 
     public void ResetBall(int goLeft)
