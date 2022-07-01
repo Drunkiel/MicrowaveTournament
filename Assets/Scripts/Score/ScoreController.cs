@@ -8,11 +8,13 @@ public class ScoreController : MonoBehaviour
 
     public TMP_Text score;
     public BallController ballController;
+    public RandomEventController eventController;
 
     //To reset
     public GameObject[] players;
     public GateController[] gateControllers;
     public int num;
+    public MapPicker mapPicker;
 
     //To animate
     SpawnText spawnText;
@@ -52,16 +54,22 @@ public class ScoreController : MonoBehaviour
 
     void CheckWinner()
     {
-        if (scoreForPlayerOne >= 8)
+        if (scoreForPlayerOne >= 4)
         {
             num = -1;
-            ResetLevel();
         }
 
-        if (scoreForPlayerTwo >= 8)
+        if (scoreForPlayerTwo >= 4)
         {
             num = 1;
+        }
+
+        if (scoreForPlayerOne >= 4 || scoreForPlayerTwo >= 4)
+        {
             ResetLevel();
+            mapPicker.PickMap();
+            eventController.DrawNumber();
+            eventController.PickEvent();
         }
     }
 
