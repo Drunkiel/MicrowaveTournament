@@ -63,12 +63,15 @@ public class DesertMap : MonoBehaviour
 
     void Wind()
     {
-        for (int i = 0; i < players.Length; i++)
+        if (multiplier != 0)
         {
-            players[i].GetComponent<Rigidbody>().AddForce(new Vector2(windSpeed * multiplier, 8));
-        }
+            for (int i = 0; i < players.Length; i++)
+            {
+                players[i].GetComponent<Rigidbody>().AddForce(new Vector2(windSpeed * multiplier, 4));
+            }
 
-        ball.AddForce(new Vector2(windSpeed / 10 * multiplier, 0));
+            ball.AddForce(new Vector2(windSpeed / 10 * multiplier, 0));
+        }
     }
 
     private IEnumerator RestTime()

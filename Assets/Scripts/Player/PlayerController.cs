@@ -4,6 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     public float knockout;
     public float jumpForce;
+    public float moveForce;
 
     public bool playerOne;
 
@@ -31,23 +32,23 @@ public class PlayerController : MonoBehaviour
         //Player one
         if (Input.GetKey(KeyCode.A) && playerOne && !onTheGround)
         {
-            MovementSequence(-1, -2);
+            MovementSequence(-1, -1);
         }
 
         if (Input.GetKey(KeyCode.D) && playerOne && !onTheGround)
         {
-            MovementSequence(1, 2);
+            MovementSequence(1, 1);
         }
 
         //Player two
         if (Input.GetKey(KeyCode.LeftArrow) && !playerOne && !onTheGround)
         {
-            MovementSequence(1, -2);
+            MovementSequence(1, -1);
         }
 
         if (Input.GetKey(KeyCode.RightArrow) && !playerOne && !onTheGround)
         {
-            MovementSequence(-1, 2);
+            MovementSequence(-1, 1);
         }
     }
 
@@ -56,6 +57,7 @@ public class PlayerController : MonoBehaviour
     {
         transform.Rotate(0.25f * num1, 0, 0);
         knockout = 1 * num2;
+        rgBody.AddForce(new Vector2(knockout * moveForce, 0));
     }
 
     void Jump()
@@ -73,6 +75,6 @@ public class PlayerController : MonoBehaviour
 
     void JumpSequence()
     {
-        rgBody.AddForce(new Vector2(knockout * jumpForce / 10, jumpForce));
+        rgBody.AddForce(new Vector2(0, jumpForce));
     }
 }
