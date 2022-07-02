@@ -4,13 +4,7 @@ public class RandomEventController : MonoBehaviour
 {
     public int randomNum;
 
-    EventVoids eventVoids;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        eventVoids = GetComponent<EventVoids>();
-    }
+    public EventVoids eventVoids;
 
     public void DrawNumber()
     {
@@ -18,7 +12,7 @@ public class RandomEventController : MonoBehaviour
 
         if (num == 5)
         {
-            randomNum = (int)Mathf.Round(Random.Range(1, 7));
+            randomNum = (int)Mathf.Round(Random.Range(1, 8));
         }
         else
         {
@@ -60,6 +54,10 @@ public class RandomEventController : MonoBehaviour
             case 6:
                 eventVoids.ChangePlayersScale(0.9f);
                 eventVoids.ChangeBallScale(1f);
+                break;
+
+            case 7:
+                eventVoids.ExplosiveMode();
                 break;
         }
 
