@@ -67,10 +67,12 @@ public class ScoreController : MonoBehaviour
         if (scoreForPlayerOne >= 4 || scoreForPlayerTwo >= 4)
         {
             ResetLevel();
-            mapPicker.PickMap();
             eventController.DrawNumber();
             eventController.PickEvent();
+            mapPicker.PickMap();
         }
+
+        eventController.eventVoids.FindBall();
     }
 
     void ResetGate()
