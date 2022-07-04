@@ -4,6 +4,7 @@ public class EventVoids : MonoBehaviour
 {
     public GameObject[] players;
     public GameObject ball;
+    public GameObject defaultBall;
     public GameObject explosiveBall;
 
     public ScoreController scoreController;
@@ -23,6 +24,12 @@ public class EventVoids : MonoBehaviour
     {
         ChangePlayersScale(0.6f);
         ChangeBallScale(0.8f);
+
+        if (ball.TryGetComponent<ExplosiveBallController>(out ExplosiveBallController ballController))
+        {
+            Destroy(ball);
+            Instantiate(defaultBall, Vector3.zero, Quaternion.identity);
+        }
     }
 
     public void ChangePlayersScale(float scale)
@@ -42,6 +49,5 @@ public class EventVoids : MonoBehaviour
     {
         Destroy(ball);
         Instantiate(explosiveBall, Vector3.zero, Quaternion.identity);
-        FindBall();
     }
 }
