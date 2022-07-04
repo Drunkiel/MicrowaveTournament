@@ -5,10 +5,12 @@ public class PlayerController : MonoBehaviour
     public float knockout;
     public float jumpForce;
     public float moveForce;
+    public float rotateSpeed;
 
     public bool playerOne;
 
     public bool onTheGround;
+    public bool isDamaged;
 
     Rigidbody rgBody;
 
@@ -55,7 +57,7 @@ public class PlayerController : MonoBehaviour
     //Num1 rotating, Num2 movement speed
     void MovementSequence(int num1, int num2)
     {
-        transform.Rotate(0.25f * num1, 0, 0);
+        transform.Rotate(0.25f * rotateSpeed * num1, 0, 0);
         knockout = 1 * num2;
         rgBody.AddForce(new Vector2(knockout * moveForce, 0));
     }
@@ -76,5 +78,18 @@ public class PlayerController : MonoBehaviour
     void JumpSequence()
     {
         rgBody.AddForce(new Vector2(0, jumpForce));
+    }
+
+    public void TakeDamage()
+    {
+        if (!isDamaged)
+        {
+            isDamaged = true;
+        }
+        else
+        {
+            gameObject.transform.position = new Vector3(100, 0, 0);
+            isDamaged = false;
+        }
     }
 }

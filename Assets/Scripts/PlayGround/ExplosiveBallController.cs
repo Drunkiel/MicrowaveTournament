@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEditor;
 
 public class ExplosiveBallController : MonoBehaviour
 {
@@ -49,6 +50,19 @@ public class ExplosiveBallController : MonoBehaviour
             num = -1;
         }
 
+        Collider[] hitPlayer = Physics.OverlapSphere(parent.position, 2f, 3);
+
+        foreach (Collider player in hitPlayer)
+        {
+            var test = player.GetComponent<PlayerController>();
+            print(test.isDamaged);
+        }
+
         rgBody.AddForce(new Vector2(ballController.startVector.x * num, 0), ForceMode.Impulse);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(new Vector3(parent.position.x, parent.position.y, parent.position.z), 2f);
     }
 }
