@@ -90,22 +90,10 @@ public class DesertMap : MonoBehaviour
         if (multiplier == 1 && windParticle.transform.position.x <= 0 && !isParticle)
         {
             CreateParticle(multiplier, multiplier);
-            print("1");
-        }
-        else if (multiplier == 1 && windParticle.transform.position.x >= 0 && !isParticle)
-        {
-            CreateParticle(-multiplier, -multiplier);
-            print("2");
-        }
-        else if (multiplier == -1 && windParticle.transform.position.x >= 0 && !isParticle)
-        {
-            CreateParticle(multiplier, multiplier);
-            print("3");
         }
         else if (multiplier == -1 && windParticle.transform.position.x <= 0 && !isParticle)
         {
             CreateParticle(-multiplier, multiplier);
-            print("4");
         }
     }
 
