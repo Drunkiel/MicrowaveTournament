@@ -12,7 +12,10 @@ public class ScoreController : MonoBehaviour
 
     //To reset
     public GameObject[] players;
-    public GateController[] gateControllers;
+#nullable enable
+    public GateController[]? gateControllers;
+    public WoodenGateController[]? woodenGates;
+#nullable disable
     public int num;
     public MapPicker mapPicker;
 
@@ -77,11 +80,37 @@ public class ScoreController : MonoBehaviour
 
     void ResetGate()
     {
-        for (int i = 0; i < gateControllers.Length; i++)
+        GameObject[] gates = GameObject.FindGameObjectsWithTag("Gate");
+
+        for (int i = 0; i < gates.Length; i++)
         {
-            gateControllers[i].cooldown = gateControllers[i].resCooldown;
-            gateControllers[i].actualStep = 0;
-            gateControllers[i].OpenGate();
+            if (gates[i].TryGetComponent(out GateController gateController))
+            {
+                gateControllers[i] = gateController;
+            }
+
+            if (gates[i].TryGetComponent(out WoodenGateController woodenGate))
+            {
+                woodenGates[i] = woodenGate;
+            }
+        }
+
+        if (gateControllers[0] != null)
+        {
+            for (int i = 0; i < gateControllers.Length; i++)
+            {
+                gateControllers[i].cooldown = gateControllers[i].resCooldown;
+                gateControllers[i].actualStep = 0;
+                gateControllers[i].OpenGate();
+            }
+        }
+
+        if (woodenGates[0] != null)
+        {
+            for (int i = 0; i < woodenGates.Length; i++)
+            {
+                woodenGates[i].defects = 0;
+            }
         }
     }
 
