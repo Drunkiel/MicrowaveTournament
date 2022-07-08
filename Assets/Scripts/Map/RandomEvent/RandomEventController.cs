@@ -12,7 +12,7 @@ public class RandomEventController : MonoBehaviour
 
         if (num == 5)
         {
-            randomNum = (int)Mathf.Round(Random.Range(1, 7));
+            randomNum = (int)Mathf.Round(Random.Range(1, 8));
         }
         else
         {
@@ -56,10 +56,14 @@ public class RandomEventController : MonoBehaviour
                 eventVoids.ChangeBallScale(1f);
                 break;
 
+            //Changing something in map
             case 7:
+                eventVoids.WoodenGates();
+                break;
+
+            case 8:
                 eventVoids.ExplosiveMode();
                 break;
         }
-
     }
 }
