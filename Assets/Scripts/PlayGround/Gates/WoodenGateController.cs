@@ -27,7 +27,7 @@ public class WoodenGateController : MonoBehaviour
         switch (defects)
         {
             case 0:
-
+                this.gameObject.SetActive(true);
                 break;
 
             case 1:

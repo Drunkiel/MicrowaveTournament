@@ -47,7 +47,7 @@ public class EventVoids : MonoBehaviour
 
         for (int i = 0; i < gates.Length; i++)
         {
-            if (gates[i].TryGetComponent(out WoodenGateController woodenGate))
+            if (gates[i].transform.childCount > 0 && gates[i].transform.GetChild(0).TryGetComponent(out WoodenGateController woodenGate))
             {
                 Destroy(gates[i]);
                 Instantiate(normalGates[i], Vector3.zero, Quaternion.identity);

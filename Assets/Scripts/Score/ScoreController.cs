@@ -76,11 +76,12 @@ public class ScoreController : MonoBehaviour
         }
 
         eventController.eventVoids.FindBall();
+        eventController.eventVoids.FindGates();
     }
 
     void ResetGate()
     {
-        GameObject[] gates = GameObject.FindGameObjectsWithTag("Gate");
+        GameObject[] gates = eventController.eventVoids.gates;
 
         for (int i = 0; i < gates.Length; i++)
         {
