@@ -8,9 +8,9 @@ public class RandomEventController : MonoBehaviour
 
     public void DrawNumber()
     {
-        int num = (int)Mathf.Round(Random.Range(1, 6));
+        int num = (int)Mathf.Round(Random.Range(1, 5));
 
-        if (num == 5)
+        if (num == 4)
         {
             randomNum = (int)Mathf.Round(Random.Range(1, 8));
         }
