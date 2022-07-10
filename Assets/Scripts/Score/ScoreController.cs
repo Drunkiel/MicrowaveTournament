@@ -111,6 +111,7 @@ public class ScoreController : MonoBehaviour
             for (int i = 0; i < woodenGates.Length; i++)
             {
                 woodenGates[i].defects = 0;
+                woodenGates[i].Injuries();
             }
         }
     }

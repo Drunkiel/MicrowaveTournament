@@ -22,12 +22,12 @@ public class WoodenGateController : MonoBehaviour
         }
     }
 
-    void Injuries()
+    public void Injuries()
     {
         switch (defects)
         {
             case 0:
-                this.gameObject.SetActive(true);
+                transform.GetChild(0).gameObject.SetActive(true);
                 break;
 
             case 1:
@@ -39,7 +39,7 @@ public class WoodenGateController : MonoBehaviour
                 break;
 
             case 3:
-                this.gameObject.SetActive(false);
+                transform.GetChild(0).gameObject.SetActive(false);
                 break;
         }
     }
