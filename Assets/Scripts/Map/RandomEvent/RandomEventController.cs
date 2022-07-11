@@ -12,7 +12,7 @@ public class RandomEventController : MonoBehaviour
 
         if (num == 4)
         {
-            randomNum = (int)Mathf.Round(Random.Range(1, 8));
+            randomNum = (int)Mathf.Round(Random.Range(1, 3));
         }
         else
         {
@@ -28,40 +28,47 @@ public class RandomEventController : MonoBehaviour
                 eventVoids.ResetObjects();
                 break;
 
-            //Making player or ball small
             case 1:
-                eventVoids.ChangePlayersScale(0.3f);
-                break;
+                int num = (int)Mathf.Round(Random.Range(1, 7));
 
-            case 2:
-                eventVoids.ChangeBallScale(0.4f);
-                break;
+                switch (num)
+                {
+                    //Making player or ball small
+                    case 1:
+                        eventVoids.ChangePlayersScale(0.3f);
+                        break;
 
-            case 3:
-                eventVoids.ChangePlayersScale(0.3f);
-                eventVoids.ChangeBallScale(0.4f);
-                break;
+                    case 2:
+                        eventVoids.ChangeBallScale(0.4f);
+                        break;
 
-            //Making player or ball big
-            case 4:
-                eventVoids.ChangePlayersScale(0.9f);
-                break;
+                    case 3:
+                        eventVoids.ChangePlayersScale(0.3f);
+                        eventVoids.ChangeBallScale(0.4f);
+                        break;
 
-            case 5:
-                eventVoids.ChangeBallScale(1f);
-                break;
+                    //Making player or ball big
+                    case 4:
+                        eventVoids.ChangePlayersScale(0.9f);
+                        break;
 
-            case 6:
-                eventVoids.ChangePlayersScale(0.9f);
-                eventVoids.ChangeBallScale(1f);
+                    case 5:
+                        eventVoids.ChangeBallScale(1f);
+                        break;
+
+                    case 6:
+                        eventVoids.ChangePlayersScale(0.9f);
+                        eventVoids.ChangeBallScale(1f);
+                        break;
+                }
                 break;
 
             //Changing something in map
-            case 7:
+            case 2:
                 eventVoids.WoodenGates();
                 break;
 
-            case 8:
+            case 3:
                 eventVoids.ExplosiveMode();
                 break;
         }
