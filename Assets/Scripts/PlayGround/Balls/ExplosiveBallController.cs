@@ -5,6 +5,7 @@ public class ExplosiveBallController : MonoBehaviour
 {
     public float cooldown;
     public float resCooldown;
+    public LayerMask layer;
 
     public Transform parent;
     public GameObject particle;
@@ -50,19 +51,14 @@ public class ExplosiveBallController : MonoBehaviour
             num = -1;
         }
 
-        Collider[] hitPlayer = Physics.OverlapSphere(parent.position, 2f, 3);
+        Collider[] hitPlayer = Physics.OverlapSphere(parent.position, 2f, layer);
 
         foreach (Collider player in hitPlayer)
         {
-            var test = player.GetComponent<PlayerController>();
-            print(test.isDamaged);
+            player.TryGetComponent(out PlayerController playerController);
+            playerController.TakeDamage();
         }
 
         rgBody.AddForce(new Vector2(ballController.startVector.x * num, 0), ForceMode.Impulse);
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.DrawSphere(new Vector3(parent.position.x, parent.position.y, parent.position.z), 2f);
     }
 }
