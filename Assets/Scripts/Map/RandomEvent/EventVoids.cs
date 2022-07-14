@@ -26,7 +26,7 @@ public class EventVoids : MonoBehaviour
     public void FindBall()
     {
         ball = GameObject.FindGameObjectWithTag("Ball");
-        scoreController.ballController = ball.GetComponent<BallController>();
+        scoreController._gameState._ballController = ball.GetComponent<BallController>();
     }
 
     public void FindGates()

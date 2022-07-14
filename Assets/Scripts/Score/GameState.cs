@@ -18,6 +18,7 @@ public class GameState
 
     public void ResetGate()
     {
+        _eventController.eventVoids.FindGates();
         GameObject[] gates = _eventController.eventVoids.gates;
 
         for (int i = 0; i < gates.Length; i++)
@@ -81,6 +82,5 @@ public class GameState
         mapPicker.PickMap();
 
         _eventController.eventVoids.FindBall();
-        _eventController.eventVoids.FindGates();
     }
 }
