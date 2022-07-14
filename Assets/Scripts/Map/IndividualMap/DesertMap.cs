@@ -20,7 +20,7 @@ public class DesertMap : MonoBehaviour
     void Start()
     {
         players = GameObject.FindGameObjectsWithTag("Player");
-        oldMultiplier = GameObject.FindGameObjectWithTag("MainCamera").transform.GetChild(0).GetComponent<ScoreController>().num;
+        oldMultiplier = GameObject.FindGameObjectWithTag("MainCamera").transform.GetChild(0).GetComponent<ScoreController>()._gameState.num;
     }
 
     // Update is called once per frame
@@ -99,7 +99,7 @@ public class DesertMap : MonoBehaviour
 
     void CreateParticle(float num1, float num2)
     {
-        Instantiate(windParticle, new Vector3(windParticle.transform.position.x * multiplier, windParticle.transform.position.y, windParticle.transform.position.z), Quaternion.Euler(0, 90 * multiplier, 0), this.gameObject.transform);
+        Instantiate(windParticle, new Vector3(windParticle.transform.position.x * multiplier, windParticle.transform.position.y, windParticle.transform.position.z), Quaternion.Euler(0, 90 * multiplier, 0));
         isParticle = true;
     }
 
