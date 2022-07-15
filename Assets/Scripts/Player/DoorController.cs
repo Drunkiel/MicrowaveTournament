@@ -3,9 +3,13 @@ using UnityEngine;
 public class DoorController : MonoBehaviour
 {
     public bool isDoorOpen;
+    public bool isBallPicked;
     public Transform tester;
 
     public LayerMask layer;
+    public Collider ball;
+
+    public ShootController shootController;
 
     Animator anim;
 
@@ -23,7 +27,14 @@ public class DoorController : MonoBehaviour
             Controller();
         }
 
-        PickBall();
+        if (!isBallPicked && isDoorOpen)
+        {
+            SearchBall();
+        }
+        else if (isBallPicked && !shootController.ballShot)
+        {
+            PickBall(ball);
+        }
     }
 
     void Controller()
@@ -40,10 +51,19 @@ public class DoorController : MonoBehaviour
         isDoorOpen = !isDoorOpen;
     }
 
-    void PickBall()
+    void SearchBall()
     {
-        Collider[] ball = Physics.OverlapSphere(tester.position, 2, layer);
+        Collider[] ballCollider = Physics.OverlapSphere(tester.position, 2, layer);
 
-        ball[0].transform.position = new Vector3(tester.position.x, tester.position.y + 0.5f, ball[0].transform.position.z);
+        if (ballCollider.Length > 0)
+        {
+            isBallPicked = true;
+            ball = ballCollider[0];
+        }
+    }
+
+    void PickBall(Collider ball)
+    {
+        ball.transform.position = new Vector3(tester.position.x, tester.position.y, ball.transform.position.z);
     }
 }
