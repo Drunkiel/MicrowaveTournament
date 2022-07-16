@@ -18,7 +18,12 @@ public class ShootController
     // Update is called once per frame
     void Update()
     {
-        Shoot();
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            Shoot();
+        }
+
+        CheckStatus();
     }
 
     void Shoot()
@@ -27,6 +32,22 @@ public class ShootController
         {
             ballShot = true;
             _doorController.ball.GetComponent<Rigidbody>().AddForce(new Vector2(5, 2));
+        }
+    }
+
+    void CheckStatus()
+    {
+        if (ballShot)
+        {
+            if (cooldown <= 0)
+            {
+                ballShot = false;
+                cooldown = resCooldown;
+            }
+            else
+            {
+                cooldown -= Time.deltaTime;
+            }
         }
     }
 }
