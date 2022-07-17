@@ -31,7 +31,7 @@ public class DoorController : MonoBehaviour
         {
             SearchBall();
         }
-        else if (isBallPicked && !shootController.ballShot)
+        else if (isBallPicked && !shootController.ballLaunched)
         {
             PickBall(ball);
         }
