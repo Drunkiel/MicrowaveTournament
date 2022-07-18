@@ -8,6 +8,8 @@ public class ShootController : MonoBehaviour
     public bool ballShotReady;
     public bool ballLaunched;
 
+    public Transform trajectory;
+
     DoorController _doorController;
 
     // Start is called before the first frame update
@@ -33,9 +35,13 @@ public class ShootController : MonoBehaviour
     {
         if (_doorController.isDoorOpen)
         {
+            Vector3 difference = trajectory.position - transform.position;
+
             ballLaunched = true;
             ejectionPower = 0;
-            _doorController.ball.GetComponent<Rigidbody>().AddForce(new Vector2(ejectionPower / 2, ejectionPower / 5));
+
+            _doorController.ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            _doorController.ball.GetComponent<Rigidbody>().velocity = new Vector2(difference.x * ejectionPower * 100, difference.y * ejectionPower * 100);
         }
     }
 
