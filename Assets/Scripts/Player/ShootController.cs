@@ -22,7 +22,7 @@ public class ShootController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && ballShotReady)
+        if ((Input.GetKeyDown(KeyCode.LeftShift) && GetComponent<PlayerController>().playerOne || Input.GetKeyDown(KeyCode.RightShift) && !GetComponent<PlayerController>().playerOne) && ballShotReady)
         {
             Shoot();
         }
@@ -40,8 +40,7 @@ public class ShootController : MonoBehaviour
             ballLaunched = true;
             ejectionPower = 0;
 
-            _doorController.ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            _doorController.ball.GetComponent<Rigidbody>().velocity = new Vector2(difference.x * ejectionPower * 100, difference.y * ejectionPower * 100);
+            _doorController.ball.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude(new Vector2(difference.x * 10, difference.y * 10), 20);
         }
     }
 
