@@ -9,20 +9,21 @@ public class DoorController : MonoBehaviour
     public LayerMask layer;
     public Collider ball;
 
-    public ShootController shootController;
+    ShootController _shootController;
 
     Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
+        _shootController = GetComponent<ShootController>();
         anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift) && GetComponent<PlayerController>().playerOne || Input.GetKeyDown(KeyCode.RightShift) && !GetComponent<PlayerController>().playerOne)
         {
             Controller();
         }
@@ -31,7 +32,7 @@ public class DoorController : MonoBehaviour
         {
             SearchBall();
         }
-        else if (isBallPicked && !shootController.ballLaunched)
+        else if (isBallPicked && !_shootController.ballLaunched)
         {
             PickBall(ball);
         }
