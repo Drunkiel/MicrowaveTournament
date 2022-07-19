@@ -4,7 +4,7 @@ public class ShootController : MonoBehaviour
 {
     public float cooldown;
     private float resCooldown;
-    public float ejectionPower;
+    public float chargedPower;
     public bool ballShotReady;
     public bool ballLaunched;
 
@@ -33,12 +33,12 @@ public class ShootController : MonoBehaviour
 
     void Shoot()
     {
-        if (_doorController.isDoorOpen)
+        if (!_doorController.isDoorOpen)
         {
             Vector3 difference = trajectory.position - transform.position;
 
             ballLaunched = true;
-            ejectionPower = 0;
+            chargedPower = 0;
 
             _doorController.ball.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude(new Vector2(difference.x * 10, difference.y * 10), 20);
         }
@@ -46,7 +46,7 @@ public class ShootController : MonoBehaviour
 
     void CheckStatus()
     {
-        if (ejectionPower >= 3)
+        if (chargedPower >= 3)
         {
             ballShotReady = true;
         }
@@ -76,9 +76,9 @@ public class ShootController : MonoBehaviour
 
     void Charge()
     {
-        if (_doorController.isBallPicked && !_doorController.isDoorOpen && ejectionPower <= 10)
+        if (_doorController.isBallPicked && !_doorController.isDoorOpen && chargedPower <= 10)
         {
-            ejectionPower += Time.deltaTime * 1.2f;
+            chargedPower += Time.deltaTime * 1.2f;
         }
     }
 }
