@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
 
         Movement();
         Jump();
+        /*RotationFixer(playerOne);*/
     }
 
     void Movement()
@@ -90,6 +91,26 @@ public class PlayerController : MonoBehaviour
         {
             gameObject.transform.position = new Vector3(100, 0, 0);
             isDamaged = false;
+        }
+    }
+
+    void RotationFixer(bool isPlayerOne)
+    {
+        float rot;
+
+        if (isPlayerOne)
+        {
+            rot = 90;
+        }
+        else
+        {
+            rot = -90;
+        }
+
+        if (transform.rotation.z < 0)
+        {
+            print("test");
+            transform.rotation = Quaternion.Euler(transform.rotation.x, rot, 0);
         }
     }
 }
