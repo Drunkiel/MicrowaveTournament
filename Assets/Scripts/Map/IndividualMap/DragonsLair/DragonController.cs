@@ -2,18 +2,10 @@ using UnityEngine;
 
 public class DragonController : MonoBehaviour
 {
-    public GameObject[] players;
     public GameObject ball;
+    public bool moveRight;
 
     public float cooldown;
-    private float resCooldown;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        resCooldown = cooldown;
-        players = GameObject.FindGameObjectsWithTag("Player");
-    }
 
     // Update is called once per frame
     void Update()
@@ -21,27 +13,38 @@ public class DragonController : MonoBehaviour
         if (cooldown <= 0)
         {
             Shoot();
-            cooldown = resCooldown;
+            cooldown = (int)Mathf.Round(Random.Range(6, 13));
         }
         else
         {
+            Movement(moveRight);
             cooldown -= Time.deltaTime;
+        }
+    }
+
+    void Movement(bool isMovingRight)
+    {
+        if (isMovingRight)
+        {
+            transform.Translate(Vector3.right * Time.deltaTime * 2);
+        }
+        else
+        {
+            transform.Translate(Vector3.left * Time.deltaTime * 2);
+        }
+
+        if (transform.position.x < -6.4f || transform.position.x > 6.6f)
+        {
+            moveRight = !moveRight;
         }
     }
 
     void Shoot()
     {
-        int num = (int)Mathf.Round(Random.Range(0, 2));
-
-        Vector3 difference = players[num].transform.position - transform.position;
-        float rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
-        print(rotZ);
-        print(num);
-
         //Changes dragon rotation
         transform.rotation = Quaternion.Euler(14, 180, 0);
 
         //Creating ball
-        Instantiate(ball, transform.position, Quaternion.Euler(14, rotZ, 0), gameObject.transform);
+        Instantiate(ball, transform.position, Quaternion.Euler(14, -180, 0));
     }
 }
