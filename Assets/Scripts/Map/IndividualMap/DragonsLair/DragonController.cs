@@ -7,6 +7,15 @@ public class DragonController : MonoBehaviour
 
     public float cooldown;
 
+    //Animation things
+    public bool isDoorOpen;
+    Animator anim;
+
+    void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -20,6 +29,8 @@ public class DragonController : MonoBehaviour
             Movement(moveRight);
             cooldown -= Time.deltaTime;
         }
+
+        DoorController();
     }
 
     void Movement(bool isMovingRight)
@@ -41,10 +52,21 @@ public class DragonController : MonoBehaviour
 
     void Shoot()
     {
-        //Changes dragon rotation
-        transform.rotation = Quaternion.Euler(14, 180, 0);
-
         //Creating ball
         Instantiate(ball, transform.position, Quaternion.Euler(14, -180, 0));
+    }
+
+    void DoorController()
+    {
+        if (cooldown <= 3 && !isDoorOpen)
+        {
+            anim.Play("DoorOpen");
+            isDoorOpen = true;
+        }
+        else if (cooldown > 3 && isDoorOpen)
+        {
+            anim.Play("DoorClose");
+            isDoorOpen = false;
+        }
     }
 }
