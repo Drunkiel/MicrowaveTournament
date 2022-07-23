@@ -13,6 +13,7 @@ public class EventVoids : MonoBehaviour
     public GameObject[] gates;
     public GameObject[] normalGates;
     public GameObject[] woodenGates;
+    public GameObject[] steelGates;
     public Transform[] parents;
 
     public ScoreController scoreController;
@@ -47,18 +48,22 @@ public class EventVoids : MonoBehaviour
 
         for (int i = 0; i < gates.Length; i++)
         {
-            if (gates[i].transform.childCount > 0 && gates[i].TryGetComponent(out WoodenGateController woodenGate))
+            if ((gates[i].transform.childCount > 0 && gates[i].TryGetComponent(out WoodenGateController woodenGate)))
             {
                 Destroy(gates[i].transform.parent.gameObject);
-
-                if (i < normalGates.Length)
-                {
-                    Instantiate(normalGates[i], Vector3.zero, Quaternion.identity, parents[i]);
-                }
+            }
+            else if (gates[i].TryGetComponent(out SteelGateController steelGateController))
+            {
+                Destroy(gates[i]);
             }
             else
             {
                 break;
+            }
+
+            if (i < normalGates.Length)
+            {
+                Instantiate(normalGates[i], Vector3.zero, Quaternion.identity, parents[i]);
             }
         }
     }
@@ -80,6 +85,16 @@ public class EventVoids : MonoBehaviour
     {
         Destroy(ball);
         Instantiate(explosiveBall, Vector3.zero, Quaternion.identity);
+        SteelGates();
+    }
+
+    void SteelGates()
+    {
+        for (int i = 0; i < gates.Length; i++)
+        {
+            Destroy(gates[i]);
+            Instantiate(steelGates[i], Vector3.zero, Quaternion.identity, parents[i]);
+        }
     }
 
     public void WoodenGates()

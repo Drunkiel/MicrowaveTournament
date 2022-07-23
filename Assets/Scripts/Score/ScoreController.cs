@@ -42,7 +42,7 @@ public class ScoreController : MonoBehaviour
         _gameState.ResetGate();
 
         //Reset ball after getting point
-        _gameState._ballController.ResetBall(_gameState.num);
+        _gameState.ResetBall(_gameState.num);
     }
 
     void CheckWinner()

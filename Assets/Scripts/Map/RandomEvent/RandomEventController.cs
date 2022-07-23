@@ -12,7 +12,7 @@ public class RandomEventController : MonoBehaviour
 
         if (num == 4)
         {
-            randomNum = (int)Mathf.Round(Random.Range(1, 3));
+            randomNum = (int)Mathf.Round(Random.Range(1, 4));
         }
         else
         {

@@ -54,6 +54,15 @@ public class GameState
         }
     }
 
+    public void ResetBall(int goLeft)
+    {
+        _eventController.eventVoids.FindBall();
+
+        _ballController.transform.position = new Vector3(0, 2.2f, -0.3f);
+        _ballController.StopBall();
+        _ballController.rgBody.AddForce(new Vector3(_ballController.startVector.x * goLeft, 0, 0), ForceMode.Impulse);
+    }
+
     public void ResetLevel()
     {
         //Gate reset
@@ -71,7 +80,7 @@ public class GameState
         _scoreController.scoreForPlayerTwo = 0;
 
         //Reseting ball
-        _ballController.ResetBall(num);
+        ResetBall(num);
     }
 
     public void AfterWin()
