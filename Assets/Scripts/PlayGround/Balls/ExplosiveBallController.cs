@@ -55,8 +55,15 @@ public class ExplosiveBallController : MonoBehaviour
 
         foreach (Collider player in hitPlayer)
         {
-            player.TryGetComponent(out PlayerController playerController);
-            playerController.TakeDamage();
+            if (player.TryGetComponent<PlayerController>(out PlayerController playerController))
+            {
+                playerController.TakeDamage();
+            }
+
+            if (player.TryGetComponent<SteelGateController>(out SteelGateController gateController))
+            {
+                gateController.isDamaged = true;
+            }
         }
 
         rgBody.AddForce(new Vector2(ballController.startVector.x * num, 0), ForceMode.Impulse);
