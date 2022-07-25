@@ -7,6 +7,9 @@ public class ScoreController : MonoBehaviour
     public int scoreForPlayerTwo;
     public TMP_Text score;
 
+    public int PlayerOneWinnedMaps;
+    public int PlayerTwoWinnedMaps;
+
     public GameState _gameState;
 
     //To animate
@@ -20,7 +23,8 @@ public class ScoreController : MonoBehaviour
     void Update()
     {
         score.text = scoreForPlayerOne.ToString() + " | " + scoreForPlayerTwo.ToString();
-        if (scoreForPlayerOne >= 4 || scoreForPlayerTwo >= 4) CheckWinner();
+        if (scoreForPlayerOne >= 4 || scoreForPlayerTwo >= 4) CheckLevelWinner();
+        if (PlayerOneWinnedMaps == 3 || PlayerTwoWinnedMaps == 3) CheckGameWinner();
     }
 
     public void AddPoints(bool forOne)
@@ -45,18 +49,35 @@ public class ScoreController : MonoBehaviour
         _gameState.ResetBall(_gameState.num);
     }
 
-    void CheckWinner()
+    void CheckLevelWinner()
     {
         if (scoreForPlayerOne >= 4)
         {
             _gameState.num = -1;
+            PlayerOneWinnedMaps++;
         }
 
         if (scoreForPlayerTwo >= 4)
         {
             _gameState.num = 1;
+            PlayerTwoWinnedMaps++;
         }
 
-        _gameState.AfterWin();
+        _gameState.RoundWin();
+    }
+
+    void CheckGameWinner()
+    {
+        if (PlayerOneWinnedMaps == 3)
+        {
+            print("blue wins");
+        }
+
+        if (PlayerTwoWinnedMaps == 3)
+        {
+            print("red wins");
+        }
+
+        _gameState.GameWin();
     }
 }

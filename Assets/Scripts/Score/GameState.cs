@@ -6,6 +6,7 @@ public class GameState
     public BallController _ballController;
     public RandomEventController _eventController;
     public ScoreController _scoreController;
+    public GameWinMenuController _gameWinMenu;
 
     //To reset
     public GameObject[] players;
@@ -83,7 +84,15 @@ public class GameState
         ResetBall(num);
     }
 
-    public void AfterWin()
+    public void GameWin()
+    {
+        _scoreController.PlayerOneWinnedMaps = 0;
+        _scoreController.PlayerTwoWinnedMaps = 0;
+
+        _gameWinMenu.OpenMenu();
+    }
+
+    public void RoundWin()
     {
         ResetLevel();
         _eventController.DrawNumber();
