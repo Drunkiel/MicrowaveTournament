@@ -3,19 +3,20 @@ using UnityEngine;
 public class LiftingController : MonoBehaviour
 {
     public GameObject[] objectsToLift;
-
-    Rigidbody rgBody;
+    public float maxHeightToLift;
+    public float defaultHeight;
 
     // Start is called before the first frame update
     void Start()
     {
+        maxHeightToLift = objectsToLift[0].transform.position.y + 1.5f;
         DrawObjectToLift();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        Lift(0);
     }
 
     void DrawObjectToLift()
@@ -28,6 +29,9 @@ public class LiftingController : MonoBehaviour
 
     void Lift(int num)
     {
-        objectsToLift[num].transform.Translate(Vector3.up * Time.deltaTime * 30);
+        while (objectsToLift[num].transform.position.y <= maxHeightToLift)
+        {
+            objectsToLift[num].transform.Translate(Vector3.forward * Time.deltaTime * 4);
+        }
     }
 }
