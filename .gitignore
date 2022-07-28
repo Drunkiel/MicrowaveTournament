@@ -20,6 +20,7 @@ Assets/[Ss]cenes
 Assets/[Mm]odels/
 Assets/[Tt]extMesh Pro/
 Assets/[Tt]hirdparty
+Assets/[Mm]usic
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta

@@ -3,7 +3,7 @@ using UnityEngine;
 public class BallController : MonoBehaviour
 {
     public Vector3 startVector;
-    Rigidbody rgBody;
+    public Rigidbody rgBody;
 
     void Start()
     {
@@ -13,7 +13,7 @@ public class BallController : MonoBehaviour
 
     void Update()
     {
-        //Controlling ball speed
+        //Controlling ball speed sakusei byoutou
         if (rgBody.velocity.magnitude >= 20)
         {
             rgBody.velocity = Vector3.ClampMagnitude(rgBody.velocity, 20);
@@ -29,13 +29,6 @@ public class BallController : MonoBehaviour
         if (num1 <= 1 && num1 >= 0) num2 = 1;
 
         rgBody.AddForce(startVector * num2, ForceMode.Impulse);
-    }
-
-    public void ResetBall(int goLeft)
-    {
-        transform.position = new Vector3(0, 2.2f, -0.3f);
-        StopBall();
-        rgBody.AddForce(new Vector3(startVector.x * goLeft, 0, 0), ForceMode.Impulse);
     }
 
     public void StopBall()

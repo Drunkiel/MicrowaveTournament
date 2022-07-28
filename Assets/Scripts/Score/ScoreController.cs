@@ -15,6 +15,9 @@ public class ScoreController : MonoBehaviour
     //To animate
     SpawnText _spawnText;
 
+    //After game win
+    public TMP_Text team;
+
     void Start()
     {
         _spawnText = GetComponent<SpawnText>();
@@ -70,12 +73,14 @@ public class ScoreController : MonoBehaviour
     {
         if (PlayerOneWinnedMaps == 3)
         {
-            print("blue wins");
+            team.color = new Color(144f, 15f, 16f);
+            team.text = "Team blue";
         }
 
         if (PlayerTwoWinnedMaps == 3)
         {
-            print("red wins");
+            team.color = new Color(144f, 15f, 16f);
+            team.text = "Team red";
         }
 
         _gameState.GameWin();

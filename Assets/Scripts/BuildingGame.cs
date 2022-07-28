@@ -8,17 +8,17 @@ public class BuildingGame : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        /*        MultiplyVariables();*/
+        /*MultiplyVariables();*/
     }
 
     void MultiplyVariables()
     {
         foreach (var player in players)
         {
-            player.moveForce *= 10;
-            player.rotateSpeed *= 3;
+            player.moveForce *= 8;
+            player.rotateSpeed *= 5;
         }
 
-        /*        desertMap.windSpeed *= 2;*/
+        /*        desertMap.windSpeed *= 10;*/
     }
 }
