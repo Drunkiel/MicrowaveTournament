@@ -5,13 +5,18 @@ public class FloorFragmentController : MonoBehaviour
     public float maxHeightToLift;
     public float defaultHeight;
 
+    public float cooldown;
+    private float resCooldown;
+
     public bool hide;
+    public LayerMask layer;
 
     // Start is called before the first frame update
     void Start()
     {
         maxHeightToLift = transform.position.y + 1.5f;
         defaultHeight = transform.position.y;
+        resCooldown = cooldown;
     }
 
     void Update()
@@ -23,11 +28,18 @@ public class FloorFragmentController : MonoBehaviour
     {
         if (transform.position.y >= maxHeightToLift)
         {
-            hide = true;
+            if (cooldown <= 0)
+            {
+                hide = true;
+                cooldown = resCooldown;
+            }
+            else
+            {
+                cooldown -= Time.deltaTime;
+            }
         }
         else
         {
-            print(transform.position.y);
             hide = false;
         }
 
@@ -37,8 +49,20 @@ public class FloorFragmentController : MonoBehaviour
         }
     }
 
+    void SendPlayerToHeaven()
+    {
+        Collider[] hitPlayer = Physics.OverlapBox(transform.position, new Vector3(0, 1, 0), Quaternion.identity, layer);
+
+        foreach (Collider player in hitPlayer)
+        {
+            player.GetComponent<PlayerController>().JumpSequence(3);
+        }
+    }
+
     public void Lift()
     {
+        SendPlayerToHeaven();
+
         while (transform.position.y <= maxHeightToLift)
         {
             transform.Translate(Vector3.forward * Time.deltaTime * 4);
@@ -49,7 +73,7 @@ public class FloorFragmentController : MonoBehaviour
     {
         while (transform.position.y >= defaultHeight)
         {
-            transform.Translate(Vector3.back * Time.deltaTime * 4);
+            transform.Translate(Vector3.back * Time.deltaTime);
         }
     }
 }
