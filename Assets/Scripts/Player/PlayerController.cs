@@ -67,18 +67,18 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.W) && playerOne)
         {
-            JumpSequence();
+            JumpSequence(1);
         }
 
         if (Input.GetKeyDown(KeyCode.UpArrow) && !playerOne)
         {
-            JumpSequence();
+            JumpSequence(1);
         }
     }
 
-    void JumpSequence()
+    public void JumpSequence(int multiplier)
     {
-        rgBody.AddForce(new Vector2(0, jumpForce));
+        rgBody.AddForce(new Vector2(0, jumpForce * multiplier));
     }
 
     public void TakeDamage()
