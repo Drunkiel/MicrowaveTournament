@@ -9,14 +9,17 @@ public class DoorController : MonoBehaviour
     public LayerMask layer;
     public Collider ball;
 
-    ShootController _shootController;
+    AudioSource audioSource;
+    public AudioClip[] audios;
 
+    ShootController _shootController;
     Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
         _shootController = GetComponent<ShootController>();
+        audioSource = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
     }
 
@@ -43,10 +46,14 @@ public class DoorController : MonoBehaviour
         if (!isDoorOpen)
         {
             anim.Play("DoorOpen");
+            audioSource.clip = audios[0];
+            audioSource.Play();
         }
         else
         {
             anim.Play("DoorClose");
+            audioSource.clip = audios[1];
+            audioSource.Play();
         }
 
         isDoorOpen = !isDoorOpen;
