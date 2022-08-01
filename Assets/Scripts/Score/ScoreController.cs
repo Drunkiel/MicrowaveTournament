@@ -11,6 +11,7 @@ public class ScoreController : MonoBehaviour
     public int PlayerTwoWinnedMaps;
 
     public GameState _gameState;
+    public ViewersController _viewersController;
 
     //To animate
     SpawnText _spawnText;
@@ -65,6 +66,8 @@ public class ScoreController : MonoBehaviour
             _gameState.num = 1;
             PlayerTwoWinnedMaps++;
         }
+
+        _viewersController.SpawnViewers();
 
         _gameState.RoundWin();
     }
