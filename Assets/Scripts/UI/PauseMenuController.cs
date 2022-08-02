@@ -7,6 +7,7 @@ public class PauseMenuController : MonoBehaviour
 
     public GameObject UI;
     public GameObject OptionsUI;
+    public GameObject CreditsUI;
 
     // Update is called once per frame
     void Update()
@@ -23,7 +24,8 @@ public class PauseMenuController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.Escape) && isGamePaused)
         {
             ResumeGameButton();
-            OptionsButton(false);
+            OpenCloseUI(OptionsUI, false);
+            OpenCloseUI(CreditsUI, false);
         }
     }
 
@@ -31,23 +33,33 @@ public class PauseMenuController : MonoBehaviour
     {
         isGamePaused = true;
         Time.timeScale = 0f;
-        UI.SetActive(true);
+        OpenCloseUI(UI, true);
     }
 
     public void ResumeGameButton()
     {
         isGamePaused = false;
         Time.timeScale = 1f;
-        UI.SetActive(false);
+        OpenCloseUI(UI, false);
     }
 
-    public void OptionsButton(bool OpenClose)
+    public void OptionsButton()
     {
-        OptionsUI.SetActive(OpenClose);
+        OpenCloseUI(OptionsUI, true);
+    }
+
+    public void CreditsButton()
+    {
+        OpenCloseUI(CreditsUI, true);
     }
 
     public void BackButton()
     {
         SceneManager.LoadScene(0);
+    }
+
+    void OpenCloseUI(GameObject UI, bool OpenClose)
+    {
+        UI.SetActive(OpenClose);
     }
 }
