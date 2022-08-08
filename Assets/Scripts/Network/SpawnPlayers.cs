@@ -3,7 +3,7 @@ using Photon.Pun;
 
 public class SpawnPlayers : MonoBehaviour
 {
-    public GameObject playerPrefab;
+    public GameObject[] playerPrefabs;
     public int playersCount;
 
     // Start is called before the first frame update
@@ -15,20 +15,13 @@ public class SpawnPlayers : MonoBehaviour
 
     void SpawnPlayer()
     {
-        float num = 1;
-
         if (playersCount == 1)
         {
-            num = 1;
+            PhotonNetwork.Instantiate(playerPrefabs[0].name, new Vector3(-7, 0, 0), Quaternion.Euler(0, 90, 0));
         }
         else if (playersCount == 2)
         {
-            num = -1;
-        }
-
-        if (playersCount <= 2)
-        {
-            PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(-7 * num, 0, 0), Quaternion.Euler(0, 90 * num, 0));
+            PhotonNetwork.Instantiate(playerPrefabs[1].name, new Vector3(7, 0, 0), Quaternion.Euler(0, -90, 0));
         }
     }
 }
