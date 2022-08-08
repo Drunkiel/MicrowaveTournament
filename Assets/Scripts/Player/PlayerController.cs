@@ -1,4 +1,5 @@
 using UnityEngine;
+using Photon.Pun;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,21 +14,26 @@ public class PlayerController : MonoBehaviour
     public bool isDamaged;
 
     Rigidbody rgBody;
+    PhotonView view;
 
     // Start is called before the first frame update
     void Start()
     {
+        CheckPlayer();
         rgBody = GetComponent<Rigidbody>();
+        view = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        onTheGround = GetComponent<TriggerController>().isTriggered;
+        if (view.IsMine)
+        {
+            onTheGround = GetComponent<TriggerController>().isTriggered;
 
-        Movement();
-        Jump();
-        /*RotationFixer(playerOne);*/
+            Movement();
+            Jump();
+        }
     }
 
     void Movement()
@@ -44,12 +50,12 @@ public class PlayerController : MonoBehaviour
         }
 
         //Player two
-        if (Input.GetKey(KeyCode.LeftArrow) && !playerOne && !onTheGround)
+        if (Input.GetKey(KeyCode.A) && !playerOne && !onTheGround)
         {
             MovementSequence(1, -1);
         }
 
-        if (Input.GetKey(KeyCode.RightArrow) && !playerOne && !onTheGround)
+        if (Input.GetKey(KeyCode.D) && !playerOne && !onTheGround)
         {
             MovementSequence(-1, 1);
         }
@@ -65,12 +71,7 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.W) && playerOne)
-        {
-            JumpSequence(1);
-        }
-
-        if (Input.GetKeyDown(KeyCode.UpArrow) && !playerOne)
+        if (Input.GetKeyDown(KeyCode.W))
         {
             JumpSequence(1);
         }
@@ -94,23 +95,15 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void RotationFixer(bool isPlayerOne)
+    void CheckPlayer()
     {
-        float rot;
-
-        if (isPlayerOne)
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
         {
-            rot = 90;
+            playerOne = true;
         }
         else
         {
-            rot = -90;
-        }
-
-        if (transform.rotation.z < 0)
-        {
-            print("test");
-            transform.rotation = Quaternion.Euler(transform.rotation.x, rot, 0);
+            playerOne = false;
         }
     }
 }
