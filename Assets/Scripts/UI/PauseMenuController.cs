@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 public class PauseMenuController : MonoBehaviour
 {
@@ -9,26 +10,33 @@ public class PauseMenuController : MonoBehaviour
     public GameObject OptionsUI;
     public GameObject CreditsUI;
 
+    PhotonView view;
+
+    void Start()
+    {
+        view = GetComponent<PhotonView>();
+    }
+
     // Update is called once per frame
     void Update()
     {
         Controller();
     }
 
+    [PunRPC]
     void Controller()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !isGamePaused)
         {
-            PauseGameButton();
+            view.RPC("PauseGameButton", RpcTarget.AllBuffered);
         }
         else if (Input.GetKeyDown(KeyCode.Escape) && isGamePaused)
         {
-            ResumeGameButton();
-            OpenCloseUI(OptionsUI, false);
-            OpenCloseUI(CreditsUI, false);
+            view.RPC("ResumeAndCloseUI", RpcTarget.AllBuffered);
         }
     }
 
+    [PunRPC]
     void PauseGameButton()
     {
         isGamePaused = true;
@@ -36,11 +44,26 @@ public class PauseMenuController : MonoBehaviour
         OpenCloseUI(UI, true);
     }
 
+    [PunRPC]
     public void ResumeGameButton()
+    {
+        view.RPC("ResumeGame", RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    void ResumeGame()
     {
         isGamePaused = false;
         Time.timeScale = 1f;
         OpenCloseUI(UI, false);
+    }
+
+    [PunRPC]
+    void ResumeAndCloseUI()
+    {
+        ResumeGameButton();
+        OpenCloseUI(OptionsUI, false);
+        OpenCloseUI(CreditsUI, false);
     }
 
     public void OptionsButton()
