@@ -1,4 +1,5 @@
 using UnityEngine;
+using Photon.Pun;
 
 [System.Serializable]
 public class GameState
@@ -17,6 +18,7 @@ public class GameState
     public int num;
     public MapPicker mapPicker;
 
+    [PunRPC]
     public void ResetGate()
     {
         _eventController.eventVoids.FindGates();
@@ -55,6 +57,7 @@ public class GameState
         }
     }
 
+    [PunRPC]
     public void ResetBall(int goLeft)
     {
         _eventController.eventVoids.FindBall();
@@ -64,6 +67,7 @@ public class GameState
         _ballController.rgBody.AddForce(new Vector3(_ballController.startVector.x * goLeft, 0, 0), ForceMode.Impulse);
     }
 
+    [PunRPC]
     public void ResetLevel()
     {
         //Gate reset
@@ -84,6 +88,7 @@ public class GameState
         ResetBall(num);
     }
 
+    [PunRPC]
     public void GameWin()
     {
         _scoreController.PlayerOneWinnedMaps = 0;
@@ -92,6 +97,7 @@ public class GameState
         _gameWinMenu.OpenMenu();
     }
 
+    [PunRPC]
     public void RoundWin()
     {
         ResetLevel();
