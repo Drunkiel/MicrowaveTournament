@@ -1,4 +1,5 @@
 using UnityEngine;
+using Photon.Pun;
 
 public class DoorController : MonoBehaviour
 {
@@ -13,12 +14,14 @@ public class DoorController : MonoBehaviour
     public AudioClip[] audios;
 
     ShootController _shootController;
+    PhotonView view;
     Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
         _shootController = GetComponent<ShootController>();
+        view = GetComponent<PhotonView>();
         audioSource = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
     }
@@ -26,7 +29,7 @@ public class DoorController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && GetComponent<PlayerController>().playerOne || Input.GetKeyDown(KeyCode.RightShift) && !GetComponent<PlayerController>().playerOne)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && view.IsMine)
         {
             Controller();
         }
