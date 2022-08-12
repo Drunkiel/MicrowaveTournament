@@ -1,4 +1,5 @@
 using UnityEngine;
+using Photon.Pun;
 
 public class GoalController : MonoBehaviour
 {
@@ -7,7 +8,14 @@ public class GoalController : MonoBehaviour
     public bool isRightSide;
 
     public ScoreController scoreController;
+    PhotonView view;
 
+    void Start()
+    {
+        view = GetComponent<PhotonView>();
+    }
+
+    [PunRPC]
     // Update is called once per frame
     void Update()
     {
@@ -15,7 +23,7 @@ public class GoalController : MonoBehaviour
 
         if (trigger && !isGoal)
         {
-            scoreController.AddPoints(isRightSide);
+            view.RPC("Goal", RpcTarget.AllBuffered);
             isGoal = true;
         }
 
@@ -23,5 +31,11 @@ public class GoalController : MonoBehaviour
         {
             isGoal = false;
         }
+    }
+
+    [PunRPC]
+    void Goal()
+    {
+        scoreController.AddPoints(isRightSide);
     }
 }
