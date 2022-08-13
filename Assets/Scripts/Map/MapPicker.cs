@@ -1,5 +1,7 @@
 using System.Linq;
+using System.IO;
 using UnityEngine;
+using Photon.Pun;
 
 public class MapPicker : MonoBehaviour
 {
@@ -11,12 +13,16 @@ public class MapPicker : MonoBehaviour
 
     void Start()
     {
+        if (!PhotonNetwork.IsMasterClient) Destroy(GetComponent<MapPicker>());
+
         pickedMaps = new bool[allMaps.Length];
         Fill();
     }
 
     public void PickMap()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+
         DestroyActualMap();
 
         //Check if have been any maps left
@@ -27,7 +33,7 @@ public class MapPicker : MonoBehaviour
 
         int ranNum = (int)Mathf.Round(Random.Range(0, restOfTheMaps.Length));
 
-        Instantiate(allMaps[restOfTheMaps[ranNum]], new Vector3(0, -6, 0), Quaternion.Euler(0, 0, 0), placeToSpawn);
+        PhotonNetwork.Instantiate(Path.Combine("Maps", allMaps[restOfTheMaps[ranNum]].name), new Vector3(0, -6, 0), Quaternion.Euler(0, 0, 0));
 
         restOfTheMaps = restOfTheMaps.Except(new int[] { restOfTheMaps[ranNum] }).ToArray();
         ReFillMaps();
@@ -59,7 +65,13 @@ public class MapPicker : MonoBehaviour
 
     void DestroyActualMap()
     {
-        GameObject map = GameObject.FindGameObjectWithTag("Wall");
-        Destroy(map.transform.parent.gameObject);
+        if (!PhotonNetwork.IsMasterClient) return;
+
+        GameObject[] maps = GameObject.FindGameObjectsWithTag("Wall");
+
+        foreach (GameObject map in maps)
+        {
+            PhotonNetwork.Destroy(map.transform.parent.gameObject);
+        }
     }
 }
