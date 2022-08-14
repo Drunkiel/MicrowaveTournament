@@ -1,4 +1,5 @@
 using UnityEngine;
+using Photon.Pun;
 
 public class RandomEventController : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class RandomEventController : MonoBehaviour
 
     public void DrawNumber()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+
         int num = (int)Mathf.Round(Random.Range(1, 5));
 
         if (num == 4)
@@ -22,6 +25,8 @@ public class RandomEventController : MonoBehaviour
 
     public void PickEvent()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+
         switch (randomNum)
         {
             case 0:
