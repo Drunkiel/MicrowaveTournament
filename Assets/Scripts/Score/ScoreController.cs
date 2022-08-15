@@ -1,7 +1,8 @@
 using UnityEngine;
+using Photon.Pun;
 using TMPro;
 
-public class ScoreController : MonoBehaviour
+public class ScoreController : MonoBehaviourPunCallbacks
 {
     public int scoreForPlayerOne;
     public int scoreForPlayerTwo;
@@ -12,6 +13,7 @@ public class ScoreController : MonoBehaviour
 
     public GameState _gameState;
     public ViewersController _viewersController;
+    PhotonView view;
 
     //To animate
     SpawnText _spawnText;
@@ -22,15 +24,17 @@ public class ScoreController : MonoBehaviour
     void Start()
     {
         _spawnText = GetComponent<SpawnText>();
+        view = GetComponent<PhotonView>();
     }
 
     void Update()
     {
         score.text = scoreForPlayerOne.ToString() + " | " + scoreForPlayerTwo.ToString();
-        if (scoreForPlayerOne >= 4 || scoreForPlayerTwo >= 4) CheckLevelWinner();
-        if (PlayerOneWinnedMaps == 3 || PlayerTwoWinnedMaps == 3) CheckGameWinner();
+        if (scoreForPlayerOne >= 4 || scoreForPlayerTwo >= 4) view.RPC("CheckRoundWinner", RpcTarget.AllBuffered);
+        if (PlayerOneWinnedMaps == 3 || PlayerTwoWinnedMaps == 3) view.RPC("CheckGameWinner", RpcTarget.AllBuffered);
     }
 
+    [PunRPC]
     public void AddPoints(bool forOne)
     {
         if (forOne)
@@ -46,6 +50,12 @@ public class ScoreController : MonoBehaviour
             _spawnText.RedScored();
         }
 
+        view.RPC("ResetGateAndBall", RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    void ResetGateAndBall()
+    {
         //Gate reset
         _gameState.ResetGate();
 
@@ -53,7 +63,8 @@ public class ScoreController : MonoBehaviour
         _gameState.ResetBall(_gameState.num);
     }
 
-    void CheckLevelWinner()
+    [PunRPC]
+    void CheckRoundWinner()
     {
         if (scoreForPlayerOne >= 4)
         {
@@ -67,11 +78,11 @@ public class ScoreController : MonoBehaviour
             PlayerTwoWinnedMaps++;
         }
 
-        _viewersController.SpawnViewers();
-
-        _gameState.RoundWin();
+        view.RPC("SpawnViewers", RpcTarget.AllBuffered);
+        view.RPC("RoundWinner", RpcTarget.AllBuffered);
     }
 
+    [PunRPC]
     void CheckGameWinner()
     {
         if (PlayerOneWinnedMaps == 3)
@@ -86,6 +97,37 @@ public class ScoreController : MonoBehaviour
             team.text = "Team red";
         }
 
+        view.RPC("GameWinner", RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    public void NextGameBTN()
+    {
+        view.RPC("DespawnViewers", RpcTarget.AllBuffered);
+    }
+
+    [PunRPC]
+    void RoundWinner()
+    {
+        _gameState.RoundWin();
+    }
+
+    [PunRPC]
+    void GameWinner()
+    {
         _gameState.GameWin();
+    }
+
+
+    [PunRPC]
+    void DespawnViewers()
+    {
+        _viewersController.DespawnViewers();
+    }
+
+    [PunRPC]
+    void SpawnViewers()
+    {
+        _viewersController.SpawnViewers();
     }
 }
