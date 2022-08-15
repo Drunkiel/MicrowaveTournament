@@ -101,8 +101,11 @@ public class GameState
     public void RoundWin()
     {
         ResetLevel();
-        _eventController.DrawNumber();
-        _eventController.PickEvent();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            _eventController.DrawNumber();
+            _eventController.PickEvent();
+        }
         mapPicker.PickMap();
 
         _eventController.eventVoids.FindBall();
