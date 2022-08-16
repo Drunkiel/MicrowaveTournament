@@ -1,8 +1,7 @@
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Photon.Pun;
 
-public class PauseMenuController : MonoBehaviour
+public class PauseMenuController : MonoBehaviourPunCallbacks
 {
     public bool isGamePaused;
 
@@ -50,8 +49,8 @@ public class PauseMenuController : MonoBehaviour
 
     public void BackButton()
     {
+        ResumeGame();
         PhotonNetwork.LeaveRoom();
-        SceneManager.LoadScene(0);
     }
 
     void OpenCloseUI(GameObject UI, bool OpenClose)
@@ -75,5 +74,10 @@ public class PauseMenuController : MonoBehaviour
         OpenCloseUI(OptionsUI, false);
         OpenCloseUI(CreditsUI, false);
         isGamePaused = false;
+    }
+
+    public override void OnLeftRoom()
+    {
+        PhotonNetwork.LoadLevel("Lobby");
     }
 }
