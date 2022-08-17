@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
 
@@ -14,6 +15,11 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     public void JoinRoom()
     {
         PhotonNetwork.JoinRoom(joinField.text);
+    }
+
+    public void QuitButton()
+    {
+        Application.Quit();
     }
 
     public override void OnJoinedRoom()
