@@ -20,7 +20,7 @@ public class BallController : MonoBehaviour
         }
     }
 
-    void FirstRound()
+    public void FirstRound()
     {
         float num1 = Mathf.Round(Random.Range(-1, 1));
         float num2 = 0;
@@ -34,5 +34,11 @@ public class BallController : MonoBehaviour
     public void StopBall()
     {
         rgBody.velocity = Vector3.zero;
+        rgBody.constraints = RigidbodyConstraints.FreezePositionY;
+    }
+
+    public void StartBall()
+    {
+        rgBody.constraints &= ~RigidbodyConstraints.FreezePositionY;
     }
 }

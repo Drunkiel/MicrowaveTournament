@@ -9,7 +9,7 @@ public class ExplosiveBallController : MonoBehaviour
     public Transform parent;
     public GameObject particle;
 
-    BallController ballController;
+    BallController _ballController;
 
     Rigidbody rgBody;
 
@@ -17,7 +17,7 @@ public class ExplosiveBallController : MonoBehaviour
     void Start()
     {
         rgBody = GetComponent<Rigidbody>();
-        ballController = GetComponent<BallController>();
+        _ballController = GetComponent<BallController>();
     }
 
     // Update is called once per frame
@@ -25,12 +25,13 @@ public class ExplosiveBallController : MonoBehaviour
     {
         if (cooldown <= 3)
         {
-            ballController.StopBall();
+            _ballController.StopBall();
         }
 
         if (cooldown <= 0)
         {
             Explode();
+            _ballController.StartBall();
             cooldown = resCooldown;
         }
         else
@@ -65,6 +66,6 @@ public class ExplosiveBallController : MonoBehaviour
             }
         }
 
-        rgBody.AddForce(new Vector2(ballController.startVector.x * num, 0), ForceMode.Impulse);
+        rgBody.AddForce(new Vector2(_ballController.startVector.x * num, 0), ForceMode.Impulse);
     }
 }
