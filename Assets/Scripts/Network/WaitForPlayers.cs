@@ -8,6 +8,7 @@ public class WaitForPlayers : MonoBehaviour
 
     PhotonView view;
     BallController _ballController;
+    public ScoreController _scoreController;
 
     void Start()
     {
@@ -47,6 +48,7 @@ public class WaitForPlayers : MonoBehaviour
     void StartTime()
     {
         UI.SetActive(false);
+        _scoreController.ResetGateAndBall();
         _ballController.FirstRound();
         Destroy(GetComponent<WaitForPlayers>());
     }
