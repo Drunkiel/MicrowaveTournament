@@ -1,25 +1,15 @@
 using UnityEngine;
+using Photon.Pun;
 
 public class WoodenGateController : MonoBehaviour
 {
     public int defects;
-    public bool test;
 
-    public bool isTriggered;
+    PhotonView view;
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        isTriggered = GetComponent<TriggerController>().isTriggered;
-
-        if (isTriggered)
-        {
-            Injuries();
-        }
-        else
-        {
-            test = false;
-        }
+        view = GetComponent<PhotonView>();
     }
 
     public void Injuries()
@@ -28,14 +18,6 @@ public class WoodenGateController : MonoBehaviour
         {
             case 0:
                 transform.GetChild(0).gameObject.SetActive(true);
-                break;
-
-            case 1:
-                //Change material to yellow
-                break;
-
-            case 2:
-                //Change material to red
                 break;
 
             case 3:
@@ -48,11 +30,14 @@ public class WoodenGateController : MonoBehaviour
     {
         if (collider.CompareTag("Ball"))
         {
-            if (!test)
-            {
-                defects++;
-                test = true;
-            }
+            view.RPC("AddDefects", RpcTarget.AllBuffered);
         }
+    }
+
+    [PunRPC]
+    void AddDefects()
+    {
+        defects++;
+        Injuries();
     }
 }
