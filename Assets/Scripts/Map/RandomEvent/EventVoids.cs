@@ -87,10 +87,8 @@ public class EventVoids : MonoBehaviour
 
         if (gates.Length == 4)
         {
-            /*            gates[0].transform.parent.parent.transform.SetParent(parents[0]);
-                        gates[2].transform.parent.parent.transform.SetParent(parents[1]);*/
-
-            return;
+            gates[0].transform.parent.transform.SetParent(parents[0]);
+            gates[2].transform.parent.transform.SetParent(parents[1]);
         }
     }
 
