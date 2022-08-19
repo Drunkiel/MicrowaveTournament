@@ -54,7 +54,7 @@ public class ScoreController : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    void ResetGateAndBall()
+    public void ResetGateAndBall()
     {
         //Gate reset
         _gameState.ResetGate();
