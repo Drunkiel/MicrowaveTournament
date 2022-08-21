@@ -87,13 +87,13 @@ public class ScoreController : MonoBehaviourPunCallbacks
     {
         if (PlayerOneWinnedMaps == 3)
         {
-            team.color = new Color(144f, 15f, 16f);
+            team.color = new Color32(144, 15, 16, 255);
             team.text = "Team blue";
         }
 
         if (PlayerTwoWinnedMaps == 3)
         {
-            team.color = new Color(144f, 15f, 16f);
+            team.color = new Color32(144, 15, 16, 255);
             team.text = "Team red";
         }
 
@@ -117,7 +117,6 @@ public class ScoreController : MonoBehaviourPunCallbacks
     {
         _gameState.GameWin();
     }
-
 
     [PunRPC]
     void DespawnViewers()
