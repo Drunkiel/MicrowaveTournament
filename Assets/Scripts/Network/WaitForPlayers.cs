@@ -1,5 +1,6 @@
 using UnityEngine;
 using Photon.Pun;
+using DiscordPresence;
 
 public class WaitForPlayers : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class WaitForPlayers : MonoBehaviour
         if (!isEnoughtPlayers)
         {
             StopTime();
+            PresenceManager.UpdatePresence(detail: "Waiting for players 1/2");
         }
         else
         {
@@ -51,5 +53,6 @@ public class WaitForPlayers : MonoBehaviour
         _scoreController.ResetGateAndBall();
         _ballController.FirstRound();
         Destroy(GetComponent<WaitForPlayers>());
+        PresenceManager.UpdatePresence(detail: "During the game");
     }
 }
