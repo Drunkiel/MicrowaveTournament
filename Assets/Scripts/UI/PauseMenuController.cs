@@ -53,9 +53,10 @@ public class PauseMenuController : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
     }
 
-    void OpenCloseUI(GameObject UI, bool OpenClose)
+    public void CloseButton()
     {
-        UI.SetActive(OpenClose);
+        OpenCloseUI(OptionsUI, false);
+        OpenCloseUI(CreditsUI, false);
     }
 
     [PunRPC]
@@ -71,9 +72,13 @@ public class PauseMenuController : MonoBehaviourPunCallbacks
     {
         Time.timeScale = 1f;
         OpenCloseUI(UI, false);
-        OpenCloseUI(OptionsUI, false);
-        OpenCloseUI(CreditsUI, false);
+        CloseButton();
         isGamePaused = false;
+    }
+
+    void OpenCloseUI(GameObject UI, bool OpenClose)
+    {
+        UI.SetActive(OpenClose);
     }
 
     public override void OnLeftRoom()
