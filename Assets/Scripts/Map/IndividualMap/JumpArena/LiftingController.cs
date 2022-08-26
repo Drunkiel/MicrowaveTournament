@@ -1,4 +1,5 @@
 using UnityEngine;
+using Photon.Pun;
 
 public class LiftingController : MonoBehaviour
 {
@@ -7,10 +8,13 @@ public class LiftingController : MonoBehaviour
     public float cooldown;
     private float resCooldown;
 
+    PhotonView view;
+
     // Start is called before the first frame update
     void Start()
     {
         resCooldown = cooldown;
+        view = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
@@ -18,7 +22,7 @@ public class LiftingController : MonoBehaviour
     {
         if (cooldown <= 0)
         {
-            DrawObjectToLift();
+            view.RPC("DrawObjectToLift", RpcTarget.AllBuffered);
             cooldown = resCooldown;
         }
         else
@@ -27,8 +31,11 @@ public class LiftingController : MonoBehaviour
         }
     }
 
+    [PunRPC]
     void DrawObjectToLift()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+
         int num = Mathf.RoundToInt(Random.Range(0, objectsToLift.Length));
 
         objectsToLift[num].GetComponent<FloorFragmentController>().Lift();

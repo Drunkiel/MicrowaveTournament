@@ -1,4 +1,5 @@
 using UnityEngine;
+using Photon.Pun;
 
 public class FloorFragmentController : MonoBehaviour
 {
@@ -11,12 +12,15 @@ public class FloorFragmentController : MonoBehaviour
     public bool hide;
     public LayerMask layer;
 
+    PhotonView view;
+
     // Start is called before the first frame update
     void Start()
     {
         maxHeightToLift = transform.position.y + 1.5f;
         defaultHeight = transform.position.y;
         resCooldown = cooldown;
+        view = GetComponent<PhotonView>();
     }
 
     void Update()
@@ -24,6 +28,7 @@ public class FloorFragmentController : MonoBehaviour
         CheckPosition();
     }
 
+    [PunRPC]
     void CheckPosition()
     {
         if (transform.position.y >= maxHeightToLift)
@@ -45,7 +50,7 @@ public class FloorFragmentController : MonoBehaviour
 
         if (hide)
         {
-            Hide();
+            view.RPC("Hide", RpcTarget.AllBuffered);
         }
     }
 
@@ -59,6 +64,7 @@ public class FloorFragmentController : MonoBehaviour
         }
     }
 
+    [PunRPC]
     public void Lift()
     {
         SendPlayerToHeaven();
@@ -69,7 +75,8 @@ public class FloorFragmentController : MonoBehaviour
         }
     }
 
-    public void Hide()
+    [PunRPC]
+    void Hide()
     {
         while (transform.position.y >= defaultHeight)
         {
