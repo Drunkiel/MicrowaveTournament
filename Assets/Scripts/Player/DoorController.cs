@@ -8,7 +8,7 @@ public class DoorController : MonoBehaviour
     public Transform tester;
 
     public LayerMask layer;
-    public Collider ball;
+    public Collider ballCollider;
 
     AudioSource audioSource;
     public AudioClip[] audios;
@@ -24,6 +24,7 @@ public class DoorController : MonoBehaviour
         view = GetComponent<PhotonView>();
         audioSource = GetComponent<AudioSource>();
         anim = GetComponent<Animator>();
+        ballCollider = GameObject.FindGameObjectWithTag("Ball").GetComponent<Collider>();
     }
 
     // Update is called once per frame
@@ -31,7 +32,7 @@ public class DoorController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftShift) && view.IsMine)
         {
-            Controller();
+            view.RPC("Controller", RpcTarget.AllBuffered);
         }
 
         if (!isBallPicked && isDoorOpen)
@@ -40,41 +41,58 @@ public class DoorController : MonoBehaviour
         }
         else if (isBallPicked && !_shootController.ballLaunched)
         {
-            PickBall(ball);
+            view.RPC("PickBall", RpcTarget.AllBuffered);
         }
+
+        AutoShoot();
     }
 
+    [PunRPC]
     void Controller()
     {
         if (!isDoorOpen)
         {
             anim.Play("DoorOpen");
-            audioSource.clip = audios[0];
+            /*            audioSource.clip = audios[0];*/
             audioSource.Play();
         }
         else
         {
             anim.Play("DoorClose");
-            audioSource.clip = audios[1];
+            /*            audioSource.clip = audios[1];*/
             audioSource.Play();
         }
 
         isDoorOpen = !isDoorOpen;
     }
 
-    void SearchBall()
+    void AutoShoot()
     {
-        Collider[] ballCollider = Physics.OverlapSphere(tester.position, 2, layer);
-
-        if (ballCollider.Length > 0)
+        if (_shootController.chargedPower >= 10 && isDoorOpen)
         {
-            isBallPicked = true;
-            ball = ballCollider[0];
+            view.RPC("Shoot", RpcTarget.AllBuffered);
+        }
+        else if (_shootController.chargedPower >= 10 && !isDoorOpen)
+        {
+            view.RPC("Controller", RpcTarget.AllBuffered);
+            view.RPC("Shoot", RpcTarget.AllBuffered);
         }
     }
 
-    void PickBall(Collider ball)
+    void SearchBall()
     {
-        ball.transform.position = new Vector3(tester.position.x, tester.position.y, ball.transform.position.z);
+        Collider[] ballColliderFound = Physics.OverlapSphere(tester.position, 2, layer);
+
+        if (ballColliderFound.Length > 0)
+        {
+            isBallPicked = true;
+            ballCollider = ballColliderFound[0];
+        }
+    }
+
+    [PunRPC]
+    void PickBall()
+    {
+        ballCollider.transform.position = new Vector2(tester.position.x, tester.position.y);
     }
 }

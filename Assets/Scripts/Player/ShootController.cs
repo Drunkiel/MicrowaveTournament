@@ -35,7 +35,7 @@ public class ShootController : MonoBehaviour
     }
 
     [PunRPC]
-    void Shoot()
+    public void Shoot()
     {
         if (_doorController.isDoorOpen)
         {
