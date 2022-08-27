@@ -1,4 +1,5 @@
 using UnityEngine;
+using Photon.Pun;
 
 public class ShootController : MonoBehaviour
 {
@@ -10,11 +11,13 @@ public class ShootController : MonoBehaviour
 
     public Transform trajectory;
 
+    PhotonView view;
     DoorController _doorController;
 
     // Start is called before the first frame update
     void Start()
     {
+        view = GetComponent<PhotonView>();
         _doorController = GetComponent<DoorController>();
         resCooldown = cooldown;
     }
@@ -22,25 +25,26 @@ public class ShootController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ((Input.GetKeyDown(KeyCode.LeftShift) && GetComponent<PlayerController>().playerOne || Input.GetKeyDown(KeyCode.RightShift) && !GetComponent<PlayerController>().playerOne) && ballShotReady)
+        if ((Input.GetKeyDown(KeyCode.LeftShift) && (GetComponent<PlayerController>().playerOne || !GetComponent<PlayerController>().playerOne)) && ballShotReady)
         {
-            Shoot();
+            view.RPC("Shoot", RpcTarget.AllBuffered);
         }
 
         CheckStatus();
         Charge();
     }
 
+    [PunRPC]
     void Shoot()
     {
-        if (!_doorController.isDoorOpen)
+        if (_doorController.isDoorOpen)
         {
             Vector3 difference = trajectory.position - transform.position;
 
             ballLaunched = true;
             chargedPower = 0;
 
-            _doorController.ball.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude(new Vector2(difference.x * 10, difference.y * 10), 20);
+            _doorController.ballCollider.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude(new Vector2(difference.x * 10, difference.y * 10), 20);
         }
     }
 
