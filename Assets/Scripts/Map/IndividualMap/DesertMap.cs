@@ -1,5 +1,7 @@
 using System.Collections;
+using System.IO;
 using UnityEngine;
+using Photon.Pun;
 
 public class DesertMap : MonoBehaviour
 {
@@ -19,6 +21,8 @@ public class DesertMap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (!PhotonNetwork.IsMasterClient) Destroy(GetComponent<DesertMap>());
+
         players = GameObject.FindGameObjectsWithTag("Player");
         oldMultiplier = GameObject.FindGameObjectWithTag("MainCamera").transform.GetChild(0).GetComponent<ScoreController>()._gameState.num;
     }
@@ -97,9 +101,10 @@ public class DesertMap : MonoBehaviour
         }
     }
 
+    [PunRPC]
     void CreateParticle(float num1, float num2)
     {
-        Instantiate(windParticle, new Vector3(windParticle.transform.position.x * multiplier, windParticle.transform.position.y, windParticle.transform.position.z), Quaternion.Euler(0, 90 * multiplier, 0));
+        PhotonNetwork.Instantiate(Path.Combine("Particles", windParticle.name), new Vector2(windParticle.transform.position.x * multiplier, windParticle.transform.position.y), Quaternion.Euler(0, 90 * multiplier, 0));
         isParticle = true;
     }
 

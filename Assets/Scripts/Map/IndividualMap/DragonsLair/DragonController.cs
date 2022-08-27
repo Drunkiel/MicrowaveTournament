@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.IO;
+using Photon.Pun;
 
 public class DragonController : MonoBehaviour
 {
@@ -10,9 +12,12 @@ public class DragonController : MonoBehaviour
     //Animation things
     public bool isDoorOpen;
     Animator anim;
+    PhotonView view;
 
     void Start()
     {
+        if (!PhotonNetwork.IsMasterClient) Destroy(GetComponent<DragonBallController>());
+        view = GetComponent<PhotonView>();
         anim = GetComponent<Animator>();
     }
 
@@ -30,7 +35,7 @@ public class DragonController : MonoBehaviour
             cooldown -= Time.deltaTime;
         }
 
-        DoorController();
+        view.RPC("DoorController", RpcTarget.AllBuffered);
     }
 
     void Movement(bool isMovingRight)
@@ -50,12 +55,16 @@ public class DragonController : MonoBehaviour
         }
     }
 
+    [PunRPC]
     void Shoot()
     {
+        if (!PhotonNetwork.IsMasterClient) return;
+
         //Creating ball
-        Instantiate(ball, transform.position, Quaternion.Euler(14, -180, 0));
+        PhotonNetwork.Instantiate(Path.Combine("Balls", ball.name), transform.position, Quaternion.Euler(14, -180, 0));
     }
 
+    [PunRPC]
     void DoorController()
     {
         if (cooldown <= 3 && !isDoorOpen)
