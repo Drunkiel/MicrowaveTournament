@@ -15,16 +15,12 @@ public class DiscordController : MonoBehaviour
         var activityManager = discord.GetActivityManager();
         var activity = new Discord.Activity
         {
-            State = "Playing",
+            State = "GAMING on version: " + Application.version,
             Details = "",
             Assets =
             {
                 LargeImage = "icon",
-                LargeText = "MicrowaveTournament"
-            },
-            Secrets =
-            {
-                Spectate = "text"
+                LargeText = "Microwave Tournament"
             },
             Timestamps =
             {
