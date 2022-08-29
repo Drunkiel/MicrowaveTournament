@@ -93,6 +93,21 @@ public class GameState
     }
 
     [PunRPC]
+    public void ResetDoors()
+    {
+        bool[] isBallPicked = new bool[2];
+        DoorController[] doors = new DoorController[2];
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            doors[i] = players[i].GetComponent<DoorController>();
+            isBallPicked[i] = doors[i].isBallPicked;
+
+            if (isBallPicked[i]) doors[i].AutoShoot();
+        }
+    }
+
+    [PunRPC]
     public void GameWin()
     {
         _scoreController.PlayerOneWinnedMaps = 0;
@@ -105,6 +120,7 @@ public class GameState
     public void RoundWin()
     {
         _loadingScreen.StartCoroutine("Load_Start");
+        ResetDoors();
         ResetLevel();
         if (PhotonNetwork.IsMasterClient)
         {
