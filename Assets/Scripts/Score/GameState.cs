@@ -12,6 +12,7 @@ public class GameState
 
     //To reset
     public GameObject[] players;
+    public GameObject[] actualGates;
 #nullable enable
     public GateController[]? _gateControllers;
     public WoodenGateController[]? _woodenGates;
@@ -22,19 +23,35 @@ public class GameState
     [PunRPC]
     public void ResetGate()
     {
-        _eventController._eventVoids.FindGates();
-        GameObject[] gates = _eventController._eventVoids.gates;
+        GetGates();
 
-        for (int i = 0; i < gates.Length; i++)
+        for (int i = 0; i < actualGates.Length; i++)
         {
-            if (gates[i].TryGetComponent(out GateController gateController))
+            if (actualGates[i].TryGetComponent(out GateController gateController))
             {
                 _gateControllers[i] = gateController;
             }
 
-            if (gates[i].TryGetComponent(out WoodenGateController woodenGate))
+            //Checking if there are parts
+            if (actualGates[i].transform.childCount != 0)
             {
-                _woodenGates[i] = woodenGate;
+                Transform[] childs = new Transform[actualGates.Length * actualGates[0].transform.childCount];
+
+                //Assigment to childs
+                for (int j = 0; j < actualGates.Length; j++)
+                {
+                    for (int k = 0; k < actualGates[j].transform.childCount; k++)
+                    {
+                        childs[k] = actualGates[0].transform.GetChild(k);
+                        childs[k + 2] = actualGates[1].transform.GetChild(k);
+                    }
+                }
+
+                //Assignment to wooden gates
+                for (int j = 0; j < childs.Length; j++)
+                {
+                    _woodenGates[j] = childs[j].GetComponent<WoodenGateController>();
+                }
             }
         }
 
@@ -69,6 +86,22 @@ public class GameState
         _ballController.StopBall();
         _ballController.StartBall();
         _ballController.rgBody.AddForce(new Vector3(_ballController.startVector.x * goLeft, 0, 0), ForceMode.Impulse);
+    }
+
+    void GetGates()
+    {
+        _eventController._eventVoids.FindGates();
+        GameObject[] allGates = _eventController._eventVoids.gates;
+
+        if (allGates.Length == 2)
+        {
+            actualGates = allGates;
+        }
+        else
+        {
+            actualGates[0] = allGates[0].transform.parent.gameObject;
+            actualGates[1] = allGates[2].transform.parent.gameObject;
+        }
     }
 
     [PunRPC]
