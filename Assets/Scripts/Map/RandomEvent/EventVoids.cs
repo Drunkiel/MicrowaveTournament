@@ -20,7 +20,7 @@ public class EventVoids : MonoBehaviour
     //Gates parent
     public Transform[] parents;
 
-    public ScoreController scoreController;
+    public ScoreController _scoreController;
 
     void Start()
     {
@@ -31,17 +31,36 @@ public class EventVoids : MonoBehaviour
     public void FindBall()
     {
         ball = GameObject.FindGameObjectWithTag("Ball");
-        scoreController._gameState._ballController = ball.GetComponent<BallController>();
+        _scoreController._gameState._ballController = ball.GetComponent<BallController>();
     }
 
     public void FindGates()
     {
-        gates = GameObject.FindGameObjectsWithTag("Gate");
+        GameObject[] foundGates = GameObject.FindGameObjectsWithTag("Gate");
+
+        for (int i = 0; i < foundGates.Length; i++)
+        {
+            if (foundGates[i] != null)
+            {
+                if (foundGates[i].transform.childCount > 0)
+                {
+                    gates[0] = foundGates[i].transform.parent.gameObject;
+                    gates[1] = foundGates[i + 2].transform.parent.gameObject;
+                    break;
+                }
+
+                gates[0] = foundGates[i];
+                gates[1] = foundGates[++i];
+                break;
+            }
+        }
+
     }
 
     [PunRPC]
     public void ResetObjects()
     {
+        //Reseting scale
         ChangePlayersScale(0.6f);
         ChangeBallScale(0.8f);
 
@@ -51,21 +70,15 @@ public class EventVoids : MonoBehaviour
             PhotonNetwork.Instantiate(Path.Combine("Balls", defaultBall.name), Vector3.zero, Quaternion.identity);
         }
 
+        //Destroying gates
         for (int i = 0; i < gates.Length; i++)
         {
-            if ((gates[i].transform.childCount > 0 && gates[i].TryGetComponent(out WoodenGateController woodenGate)))
-            {
-                PhotonNetwork.Destroy(gates[i].transform.parent.gameObject);
-            }
-            else if (gates[i].TryGetComponent(out SteelGateController steelGateController))
-            {
-                PhotonNetwork.Destroy(gates[i]);
-            }
-            else
-            {
-                break;
-            }
+            Destroy(gates[i]);
+        }
 
+        //Spawning new gates
+        for (int i = 0; i < gates.Length; i++)
+        {
             if (i < normalGates.Length)
             {
                 PhotonNetwork.Instantiate(Path.Combine("Gates", normalGates[i].name), Vector3.zero, Quaternion.identity);
@@ -114,22 +127,22 @@ public class EventVoids : MonoBehaviour
     }
 
     [PunRPC]
-    void SteelGates()
-    {
-        for (int i = 0; i < gates.Length; i++)
-        {
-            PhotonNetwork.Destroy(gates[i]);
-            PhotonNetwork.Instantiate(Path.Combine("Gates", steelGates[i].name), Vector3.zero, Quaternion.identity);
-        }
-    }
-
-    [PunRPC]
     public void WoodenGates()
     {
         for (int i = 0; i < gates.Length; i++)
         {
             PhotonNetwork.Destroy(gates[i]);
             PhotonNetwork.Instantiate(Path.Combine("Gates", woodenGates[i].name), Vector3.zero, Quaternion.identity);
+        }
+    }
+
+    [PunRPC]
+    void SteelGates()
+    {
+        for (int i = 0; i < gates.Length; i++)
+        {
+            PhotonNetwork.Destroy(gates[i]);
+            PhotonNetwork.Instantiate(Path.Combine("Gates", steelGates[i].name), Vector3.zero, Quaternion.identity);
         }
     }
 }
