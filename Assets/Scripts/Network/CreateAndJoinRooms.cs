@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
@@ -9,7 +10,9 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public void CreateRoom()
     {
-        PhotonNetwork.CreateRoom(createField.text);
+        string hostPassword = String.Concat(createField.text);
+
+        if (createField.text != "" && hostPassword.Length >= 2) PhotonNetwork.CreateRoom(hostPassword);
     }
 
     public void JoinRoom()
