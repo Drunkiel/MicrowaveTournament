@@ -55,12 +55,12 @@ public class ExplosiveBallController : MonoBehaviour
 
         foreach (Collider player in hitPlayer)
         {
-            if (player.TryGetComponent<PlayerController>(out PlayerController playerController))
+            if (player.TryGetComponent(out PlayerController playerController))
             {
                 playerController.TakeDamage();
             }
 
-            if (player.TryGetComponent<SteelGateController>(out SteelGateController gateController))
+            if (player.TryGetComponent(out SteelGateController gateController))
             {
                 gateController.isDamaged = true;
             }
