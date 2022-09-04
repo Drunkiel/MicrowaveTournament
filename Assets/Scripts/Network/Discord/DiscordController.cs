@@ -5,6 +5,9 @@ using Discord;
 
 public class DiscordController : MonoBehaviour
 {
+    public string stateTextToShow;
+    public string detailsTextToShow;
+
     public Discord.Discord discord;
     private float timeInGame;
 
@@ -15,8 +18,8 @@ public class DiscordController : MonoBehaviour
         var activityManager = discord.GetActivityManager();
         var activity = new Discord.Activity
         {
-            State = "GAMING on version: " + Application.version,
-            Details = "",
+            State = stateTextToShow + ": " + Application.version,
+            Details = detailsTextToShow,
             Assets =
             {
                 LargeImage = "icon",
