@@ -1,6 +1,5 @@
 using UnityEngine;
 using Photon.Pun;
-using DiscordPresence;
 
 public class WaitForPlayers : MonoBehaviour
 {
@@ -14,7 +13,7 @@ public class WaitForPlayers : MonoBehaviour
     void Start()
     {
         view = GetComponent<PhotonView>();
-        _ballController = GameObject.FindGameObjectWithTag("Ball").GetComponent<BallController>();
+        GetBall();
     }
 
     // Update is called once per frame
@@ -32,7 +31,6 @@ public class WaitForPlayers : MonoBehaviour
         if (!isEnoughtPlayers)
         {
             StopTime();
-            PresenceManager.UpdatePresence(detail: "Waiting for players 1/2");
         }
         else
         {
@@ -42,6 +40,7 @@ public class WaitForPlayers : MonoBehaviour
 
     void StopTime()
     {
+        GetBall();
         _ballController.StopBall();
         UI.SetActive(true);
     }
@@ -49,10 +48,16 @@ public class WaitForPlayers : MonoBehaviour
     [PunRPC]
     void StartTime()
     {
+        GetBall();
         UI.SetActive(false);
-        _scoreController.ResetGateAndBall();
+        _scoreController.ResetGateBallDoors();
         _ballController.FirstRound();
         Destroy(GetComponent<WaitForPlayers>());
-        PresenceManager.UpdatePresence(detail: "During the game");
+    }
+
+    void GetBall()
+    {
+        _scoreController._gameState._eventController._eventVoids.FindBall();
+        _ballController = _scoreController._gameState._eventController._eventVoids.ball.GetComponent<BallController>();
     }
 }

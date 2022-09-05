@@ -5,7 +5,7 @@ public class BallController : MonoBehaviour
     public Vector3 startVector;
     public Rigidbody rgBody;
 
-    void Start()
+    void Awake()
     {
         rgBody = GetComponent<Rigidbody>();
         FirstRound();
@@ -34,11 +34,5 @@ public class BallController : MonoBehaviour
     public void StopBall()
     {
         rgBody.velocity = Vector3.zero;
-        rgBody.constraints = RigidbodyConstraints.FreezePositionY;
-    }
-
-    public void StartBall()
-    {
-        rgBody.constraints &= ~RigidbodyConstraints.FreezePositionY;
     }
 }

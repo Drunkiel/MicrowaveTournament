@@ -84,8 +84,25 @@ public class GameState
 
         _ballController.transform.position = new Vector3(0, 2.2f, -0.3f);
         _ballController.StopBall();
-        _ballController.StartBall();
         _ballController.rgBody.AddForce(new Vector3(_ballController.startVector.x * goLeft, 0, 0), ForceMode.Impulse);
+    }
+
+    public void ResetPlayers()
+    {
+        _eventController._eventVoids.FindPlayers();
+        players = _eventController._eventVoids.players;
+
+        if (PhotonNetwork.CountOfPlayers == 1)
+        {
+            players[0].transform.position = new Vector2(-7, 0);
+            players[0].transform.rotation = Quaternion.Euler(0, 90, 0);
+        }
+
+        if (PhotonNetwork.CountOfPlayers == 2)
+        {
+            players[1].transform.position = new Vector2(7, 0);
+            players[1].transform.rotation = Quaternion.Euler(0, -90, 0);
+        }
     }
 
     void GetGates()
@@ -111,11 +128,7 @@ public class GameState
         ResetGate();
 
         //Reseting players positions and rotation
-        players[0].transform.position = new Vector3(-7, 0, 0);
-        players[1].transform.position = new Vector3(7, 0, 0);
-
-        players[0].transform.rotation = Quaternion.Euler(0, 90, 0);
-        players[1].transform.rotation = Quaternion.Euler(0, -90, 0);
+        ResetPlayers();
 
         //Reseting score
         _scoreController.scoreForPlayerOne = 0;
