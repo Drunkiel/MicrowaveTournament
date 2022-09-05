@@ -31,7 +31,6 @@ public class ExplosiveBallController : MonoBehaviour
         if (cooldown <= 0)
         {
             Explode();
-            _ballController.StartBall();
             cooldown = resCooldown;
         }
         else
@@ -58,6 +57,21 @@ public class ExplosiveBallController : MonoBehaviour
             if (player.TryGetComponent(out PlayerController playerController))
             {
                 playerController.TakeDamage();
+
+                //Check if player lose and destroying gate
+                if (playerController.transform.position.x > 50)
+                {
+                    GameObject[] gateOfLosedPlayer = GameObject.FindGameObjectsWithTag("Gate");
+
+                    if (playerController.playerOne)
+                    {
+                        gateOfLosedPlayer[0].GetComponent<SteelGateController>().isDamaged = true;
+                    }
+                    else
+                    {
+                        gateOfLosedPlayer[1].GetComponent<SteelGateController>().isDamaged = true;
+                    }
+                }
             }
 
             if (player.TryGetComponent(out SteelGateController gateController))
