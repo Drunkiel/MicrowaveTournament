@@ -16,6 +16,7 @@ public class EventVoids : MonoBehaviour
     public GameObject[] normalGates;
     public GameObject[] woodenGates;
     public GameObject[] steelGates;
+    public GameObject[] basketballGates;
 
     //Gates parent
     public Transform[] parents;
@@ -26,6 +27,7 @@ public class EventVoids : MonoBehaviour
     {
         FindBall();
         FindGates();
+        FindPlayers();
     }
 
     public void FindBall()
@@ -54,7 +56,12 @@ public class EventVoids : MonoBehaviour
                 break;
             }
         }
+    }
 
+    public void FindPlayers()
+    {
+        GameObject[] foundPlayers = GameObject.FindGameObjectsWithTag("Player");
+        players = foundPlayers;
     }
 
     [PunRPC]
@@ -118,6 +125,17 @@ public class EventVoids : MonoBehaviour
         ball.transform.localScale = new Vector3(scale, scale, scale);
     }
 
+    void GatesToSpawn(string gateLeftName, string gateRightName)
+    {
+        string[] gatesToSpawn = new string[2] { gateLeftName, gateRightName };
+
+        for (int i = 0; i < gates.Length; i++)
+        {
+            PhotonNetwork.Destroy(gates[i]);
+            PhotonNetwork.Instantiate(Path.Combine("Gates", gatesToSpawn[i]), Vector3.zero, Quaternion.identity);
+        }
+    }
+
     [PunRPC]
     public void ExplosiveMode()
     {
@@ -129,20 +147,18 @@ public class EventVoids : MonoBehaviour
     [PunRPC]
     public void WoodenGates()
     {
-        for (int i = 0; i < gates.Length; i++)
-        {
-            PhotonNetwork.Destroy(gates[i]);
-            PhotonNetwork.Instantiate(Path.Combine("Gates", woodenGates[i].name), Vector3.zero, Quaternion.identity);
-        }
+        GatesToSpawn(woodenGates[0].name, woodenGates[1].name);
+    }
+
+    [PunRPC]
+    public void BaketballGates()
+    {
+        GatesToSpawn(basketballGates[0].name, basketballGates[1].name);
     }
 
     [PunRPC]
     void SteelGates()
     {
-        for (int i = 0; i < gates.Length; i++)
-        {
-            PhotonNetwork.Destroy(gates[i]);
-            PhotonNetwork.Instantiate(Path.Combine("Gates", steelGates[i].name), Vector3.zero, Quaternion.identity);
-        }
+        GatesToSpawn(steelGates[0].name, steelGates[1].name);
     }
 }
