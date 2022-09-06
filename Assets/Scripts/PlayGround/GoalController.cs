@@ -7,12 +7,13 @@ public class GoalController : MonoBehaviour
     public bool isGoal;
     public bool isRightSide;
 
-    public ScoreController scoreController;
+    ScoreController _scoreController;
     PhotonView view;
 
     void Start()
     {
         view = GetComponent<PhotonView>();
+        _scoreController = GameObject.FindGameObjectWithTag("MainCamera").transform.GetChild(0).GetComponent<ScoreController>();
     }
 
     [PunRPC]
@@ -36,6 +37,6 @@ public class GoalController : MonoBehaviour
     [PunRPC]
     void Goal()
     {
-        scoreController.AddPoints(isRightSide);
+        _scoreController.AddPoints(isRightSide);
     }
 }
