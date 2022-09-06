@@ -74,7 +74,7 @@ public class TiltMap : MonoBehaviour
             {
                 anim.Play("LiftLeft_Reverse");
             }
-            else if (liftRight)
+            else
             {
                 anim.Play("LiftRight_Reverse");
             }
@@ -85,7 +85,7 @@ public class TiltMap : MonoBehaviour
             {
                 anim.Play("LiftLeft");
             }
-            else if (liftRight)
+            else
             {
                 anim.Play("LiftRight");
             }
