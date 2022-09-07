@@ -50,14 +50,17 @@ public class ScoreController : MonoBehaviourPunCallbacks
             _spawnText.RedScored();
         }
 
-        view.RPC("ResetGateAndBall", RpcTarget.AllBuffered);
+        view.RPC("ResetGateBallDoors", RpcTarget.AllBuffered);
     }
 
     [PunRPC]
-    public void ResetGateAndBall()
+    public void ResetGateBallDoors()
     {
         //Gate reset
         _gameState.ResetGate();
+
+        //ResetDoors
+        _gameState.ResetDoors();
 
         //Reset ball after getting point
         _gameState.ResetBall(_gameState.num);
@@ -87,7 +90,7 @@ public class ScoreController : MonoBehaviourPunCallbacks
     {
         if (PlayerOneWinnedMaps == 3)
         {
-            team.color = new Color32(144, 15, 16, 255);
+            team.color = new Color32(15, 45, 144, 255);
             team.text = "Team blue";
         }
 

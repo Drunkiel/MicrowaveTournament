@@ -66,7 +66,7 @@ public class DoorController : MonoBehaviour
         isDoorOpen = !isDoorOpen;
     }
 
-    void AutoShoot()
+    public void AutoShoot()
     {
         if (_shootController.chargedPower >= 10 && isDoorOpen)
         {
