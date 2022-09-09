@@ -15,7 +15,7 @@ public class RandomEventController : MonoBehaviour
 
         if (num == 4)
         {
-            randomNum = (int)Mathf.Round(Random.Range(1, 3));
+            randomNum = (int)Mathf.Round(Random.Range(1, 4));
         }
         else
         {
@@ -34,9 +34,9 @@ public class RandomEventController : MonoBehaviour
                 break;
 
             case 1:
-                int num = (int)Mathf.Round(Random.Range(1, 7));
+                int number = (int)Mathf.Round(Random.Range(1, 7));
 
-                switch (num)
+                switch (number)
                 {
                     //Making player or ball small
                     case 1:
@@ -75,6 +75,10 @@ public class RandomEventController : MonoBehaviour
 
             case 3:
                 _eventVoids.ExplosiveMode();
+                break;
+
+            case 4:
+                _eventVoids.BaketballGates();
                 break;
         }
 

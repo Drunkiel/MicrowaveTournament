@@ -82,9 +82,9 @@ public class GameState
     {
         _eventController._eventVoids.FindBall();
 
-        _ballController.transform.position = new Vector3(0, 2.2f, -0.3f);
+        _ballController.transform.position = new Vector2(0, 2.2f);
         _ballController.StopBall();
-        _ballController.rgBody.AddForce(new Vector3(_ballController.startVector.x * goLeft, 0, 0), ForceMode.Impulse);
+        _ballController.rgBody.AddForce(new Vector2(_ballController.startVector.x * goLeft, 0), ForceMode.Impulse);
     }
 
     public void ResetPlayers()
@@ -146,6 +146,8 @@ public class GameState
 
         for (int i = 0; i < players.Length; i++)
         {
+            if (doors[i] == null) return;
+
             doors[i] = players[i].GetComponent<DoorController>();
             isBallPicked[i] = doors[i].isBallPicked;
 
