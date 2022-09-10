@@ -92,6 +92,11 @@ public class GameState
         _eventController._eventVoids.FindPlayers();
         players = _eventController._eventVoids.players;
 
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (players[i].transform.parent) players[i].transform.parent = null;
+        }
+
         if (PhotonNetwork.CountOfPlayers == 1)
         {
             players[0].transform.position = new Vector2(-7, 0);
