@@ -104,7 +104,7 @@ public class DesertMap : MonoBehaviour
     [PunRPC]
     void CreateParticle(float num1, float num2)
     {
-        PhotonNetwork.Instantiate(Path.Combine("Particles", windParticle.name), new Vector2(windParticle.transform.position.x * multiplier, windParticle.transform.position.y), Quaternion.Euler(0, 90 * multiplier, 0));
+        PhotonNetwork.Instantiate(Path.Combine("Particles", windParticle.name), new Vector3(windParticle.transform.position.x * multiplier, windParticle.transform.position.y, -3f), Quaternion.Euler(0, 90 * multiplier, 0));
         isParticle = true;
     }
 
