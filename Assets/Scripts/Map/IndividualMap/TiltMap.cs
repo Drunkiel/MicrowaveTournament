@@ -41,23 +41,13 @@ public class TiltMap : MonoBehaviour
         }
     }
 
-    void DrawNumber()
+    void ChangeDirectionToLift()
     {
         timeToReverse = !timeToReverse;
 
         if (!timeToReverse)
         {
-            float num = Mathf.Round(Random.Range(-1, 1));
-
-            if (num >= -1 && num < 0)
-            {
-                liftRight = false;
-            }
-
-            if (num <= 1 && num >= 0)
-            {
-                liftRight = true;
-            }
+            liftRight = !liftRight;
         }
     }
 
@@ -66,7 +56,7 @@ public class TiltMap : MonoBehaviour
     {
         if (!PhotonNetwork.IsMasterClient) return;
 
-        DrawNumber();
+        ChangeDirectionToLift();
 
         if (timeToReverse)
         {
