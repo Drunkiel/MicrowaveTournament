@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class DiscoBall : MonoBehaviour
 {
-    public float speedOfColorChange;
     public int maxNumberToReach; //Between 0 and 255
+
+    //Renderers to update
+    public Renderer ballRenderer;
     public Light lightEmitter;
     public TrailRenderer trailColor;
 
@@ -66,6 +68,8 @@ public class DiscoBall : MonoBehaviour
         }
 
         Color32 newColor = new Color32(intensityRed, intensityGreen, intensityBlue, 255);
+
+        ballRenderer.material.SetColor("_Color", newColor);
         lightEmitter.color = newColor;
         trailColor.endColor = newColor;
     }
