@@ -10,6 +10,7 @@ public class ExplosiveBallController : MonoBehaviour
     public GameObject particle;
 
     BallController _ballController;
+    TwinklingController _twinklingController;
 
     Rigidbody rgBody;
 
@@ -18,6 +19,7 @@ public class ExplosiveBallController : MonoBehaviour
     {
         rgBody = GetComponent<Rigidbody>();
         _ballController = GetComponent<BallController>();
+        _twinklingController = GetComponent<TwinklingController>();
     }
 
     // Update is called once per frame
@@ -26,11 +28,13 @@ public class ExplosiveBallController : MonoBehaviour
         if (cooldown <= 3)
         {
             _ballController.StopBall();
+            _twinklingController.speedOfTwinkling = 0.2f;
         }
 
         if (cooldown <= 0)
         {
             Explode();
+            _twinklingController.speedOfTwinkling = _twinklingController.initialSpeedOfTwinkling;
             cooldown = resCooldown;
         }
         else
