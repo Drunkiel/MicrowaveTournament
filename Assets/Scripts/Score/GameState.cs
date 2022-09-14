@@ -6,6 +6,7 @@ public class GameState
 {
     public BallController _ballController;
     public RandomEventController _eventController;
+    public FlowOfTheGameController _gameController;
     public ScoreController _scoreController;
     public GameWinMenuController _gameWinMenu;
     public LoadingScreen _loadingScreen;
@@ -74,13 +75,13 @@ public class GameState
             }
         }
 
-        _eventController._eventVoids.SetGatesToParent();
+        _gameController.SetGatesToParent();
     }
 
     [PunRPC]
     public void ResetBall(int goLeft)
     {
-        _eventController._eventVoids.FindBall();
+        _gameController.FindBall();
 
         _ballController.transform.position = new Vector2(0, 2.2f);
         _ballController.StopBall();
@@ -89,7 +90,7 @@ public class GameState
 
     public void ResetPlayers()
     {
-        _eventController._eventVoids.FindPlayers();
+        _gameController.FindPlayers();
         players = _eventController._eventVoids.players;
 
         for (int i = 0; i < players.Length; i++)
@@ -112,7 +113,7 @@ public class GameState
 
     void GetGates()
     {
-        _eventController._eventVoids.FindGates();
+        _gameController.FindGates();
         GameObject[] allGates = _eventController._eventVoids.gates;
 
         if (allGates.Length == 2)
@@ -173,6 +174,7 @@ public class GameState
     public void RoundWin()
     {
         _loadingScreen.StartCoroutine("Load_Start");
+        _gameController.DestroyParticles();
         ResetDoors();
         ResetLevel();
         if (PhotonNetwork.IsMasterClient)
@@ -182,6 +184,6 @@ public class GameState
         }
         mapPicker.PickMap();
 
-        _eventController._eventVoids.FindBall();
+        _gameController.FindBall();
     }
 }

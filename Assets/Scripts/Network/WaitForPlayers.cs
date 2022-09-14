@@ -9,6 +9,7 @@ public class WaitForPlayers : MonoBehaviour
     PhotonView view;
     BallController _ballController;
     public ScoreController _scoreController;
+    public FlowOfTheGameController _gameController;
 
     void Start()
     {
@@ -57,7 +58,7 @@ public class WaitForPlayers : MonoBehaviour
 
     void GetBall()
     {
-        _scoreController._gameState._eventController._eventVoids.FindBall();
-        _ballController = _scoreController._gameState._eventController._eventVoids.ball.GetComponent<BallController>();
+        _gameController.FindBall();
+        _ballController = _gameController._eventVoids.ball.GetComponent<BallController>();
     }
 }

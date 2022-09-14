@@ -11,6 +11,9 @@ public class ScoreController : MonoBehaviourPunCallbacks
     public int PlayerOneWinnedMaps;
     public int PlayerTwoWinnedMaps;
 
+    public GameObject goalParticle;
+    public GameObject gameWinParticle;
+
     public GameState _gameState;
     public ViewersController _viewersController;
     PhotonView view;
@@ -42,12 +45,14 @@ public class ScoreController : MonoBehaviourPunCallbacks
             scoreForPlayerOne++;
             _gameState.num = -1;
             _spawnText.BlueScored();
+            Instantiate(goalParticle, new Vector3(-9, -1.7f, 0), Quaternion.identity);
         }
         else
         {
             scoreForPlayerTwo++;
             _gameState.num = 1;
             _spawnText.RedScored();
+            Instantiate(goalParticle, new Vector3(9, -1.7f, 0), Quaternion.Euler(0, 180, 0));
         }
 
         view.RPC("ResetGateBallDoors", RpcTarget.AllBuffered);
@@ -119,6 +124,7 @@ public class ScoreController : MonoBehaviourPunCallbacks
     void GameWinner()
     {
         _gameState.GameWin();
+        Instantiate(gameWinParticle);
     }
 
     [PunRPC]

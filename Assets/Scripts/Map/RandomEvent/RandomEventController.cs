@@ -6,16 +6,18 @@ public class RandomEventController : MonoBehaviour
     public int randomNum;
 
     public EventVoids _eventVoids;
+    public FlowOfTheGameController _gameController;
 
     public void DrawNumber()
     {
         if (!PhotonNetwork.IsMasterClient) return;
 
-        int num = (int)Mathf.Round(Random.Range(1, 5));
+        int num = (int)Mathf.Round(Random.Range(0, 4));
+        print(num);
 
-        if (num == 4)
+        if (num == 3)
         {
-            randomNum = (int)Mathf.Round(Random.Range(1, 4));
+            randomNum = (int)Mathf.Round(Random.Range(1, 5));
         }
         else
         {
@@ -30,38 +32,38 @@ public class RandomEventController : MonoBehaviour
         switch (randomNum)
         {
             case 0:
-                _eventVoids.ResetObjects();
+                _gameController.ResetObjects();
                 break;
 
             case 1:
-                int number = (int)Mathf.Round(Random.Range(1, 7));
+                int number = (int)Mathf.Round(Random.Range(0, 6));
 
                 switch (number)
                 {
                     //Making player or ball small
-                    case 1:
+                    case 0:
                         _eventVoids.ChangePlayersScale(0.3f);
                         break;
 
-                    case 2:
+                    case 1:
                         _eventVoids.ChangeBallScale(0.4f);
                         break;
 
-                    case 3:
+                    case 2:
                         _eventVoids.ChangePlayersScale(0.3f);
                         _eventVoids.ChangeBallScale(0.4f);
                         break;
 
                     //Making player or ball big
-                    case 4:
+                    case 3:
                         _eventVoids.ChangePlayersScale(0.9f);
                         break;
 
-                    case 5:
+                    case 4:
                         _eventVoids.ChangeBallScale(1f);
                         break;
 
-                    case 6:
+                    case 5:
                         _eventVoids.ChangePlayersScale(0.9f);
                         _eventVoids.ChangeBallScale(1f);
                         break;
@@ -78,10 +80,14 @@ public class RandomEventController : MonoBehaviour
                 break;
 
             case 4:
+                _eventVoids.DiscoMode();
+                break;
+
+            case 5:
                 _eventVoids.BaketballGates();
                 break;
         }
 
-        _eventVoids.SetGatesToParent();
+        _gameController.SetGatesToParent();
     }
 }
