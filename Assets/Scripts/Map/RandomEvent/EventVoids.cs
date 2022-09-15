@@ -41,31 +41,31 @@ public class EventVoids : MonoBehaviour
     [PunRPC]
     public void ExplosiveMode()
     {
-        _gameController.BallToSpawn(explosiveBall.name);
+        _gameController.BallToSpawn(explosiveBall);
         SteelGates();
     }
 
     [PunRPC]
     public void WoodenGates()
     {
-        _gameController.GatesToSpawn(woodenGates[0].name, woodenGates[1].name);
+        _gameController.GatesToSpawn(woodenGates[0], woodenGates[1]);
     }
 
     [PunRPC]
     void SteelGates()
     {
-        _gameController.GatesToSpawn(steelGates[0].name, steelGates[1].name);
+        _gameController.GatesToSpawn(steelGates[0], steelGates[1]);
     }
 
     [PunRPC]
     public void BaketballGates()
     {
-        _gameController.GatesToSpawn(basketballGates[0].name, basketballGates[1].name);
+        _gameController.GatesToSpawn(basketballGates[0], basketballGates[1]);
     }
 
     [PunRPC]
     public void DiscoMode()
     {
-        _gameController.BallToSpawn(discoBall.name);
+        _gameController.BallToSpawn(discoBall);
     }
 }

@@ -28,16 +28,19 @@ public class FlowOfTheGameController : MonoBehaviour
         {
             if (foundGates[i] != null)
             {
-                if (foundGates[i].transform.childCount > 0)
+                if (foundGates[i].transform.childCount <= 1)
+                {
+                    _eventVoids.gates[0] = foundGates[i];
+                    _eventVoids.gates[1] = foundGates[++i];
+                    break;
+                }
+
+                if (foundGates[i].transform.childCount > 1)
                 {
                     _eventVoids.gates[0] = foundGates[i].transform.parent.gameObject;
                     _eventVoids.gates[1] = foundGates[i + 2].transform.parent.gameObject;
                     break;
                 }
-
-                _eventVoids.gates[0] = foundGates[i];
-                _eventVoids.gates[1] = foundGates[++i];
-                break;
             }
         }
     }
@@ -57,8 +60,7 @@ public class FlowOfTheGameController : MonoBehaviour
 
         if (_eventVoids.ball.TryGetComponent(out ExplosiveBallController ballController))
         {
-            PhotonNetwork.Destroy(_eventVoids.ball);
-            PhotonNetwork.Instantiate(Path.Combine("Balls", _eventVoids.defaultBall.name), Vector3.zero, Quaternion.identity);
+            BallToSpawn(_eventVoids.defaultBall);
         }
 
         //Destroying gates
@@ -96,21 +98,21 @@ public class FlowOfTheGameController : MonoBehaviour
         }
     }
 
-    public void GatesToSpawn(string gateLeftName, string gateRightName)
+    public void GatesToSpawn(GameObject gateLeftName, GameObject gateRightName)
     {
-        string[] gatesToSpawn = new string[2] { gateLeftName, gateRightName };
+        GameObject[] gatesToSpawn = new GameObject[2] { gateLeftName, gateRightName };
 
         for (int i = 0; i < _eventVoids.gates.Length; i++)
         {
             PhotonNetwork.Destroy(_eventVoids.gates[i]);
-            PhotonNetwork.Instantiate(Path.Combine("Gates", gatesToSpawn[i]), Vector3.zero, Quaternion.identity);
+            PhotonNetwork.Instantiate(Path.Combine("Gates", gatesToSpawn[i].name), gatesToSpawn[i].transform.position, Quaternion.identity);
         }
     }
 
-    public void BallToSpawn(string ballName)
+    public void BallToSpawn(GameObject ballName)
     {
         PhotonNetwork.Destroy(_eventVoids.ball);
-        PhotonNetwork.Instantiate(Path.Combine("Balls", ballName), Vector3.zero, Quaternion.identity);
+        PhotonNetwork.Instantiate(Path.Combine("Balls", ballName.name), ballName.transform.position, Quaternion.identity);
     }
 
     public void DestroyParticles()

@@ -13,11 +13,10 @@ public class RandomEventController : MonoBehaviour
         if (!PhotonNetwork.IsMasterClient) return;
 
         int num = (int)Mathf.Round(Random.Range(0, 4));
-        print(num);
 
         if (num == 3)
         {
-            randomNum = (int)Mathf.Round(Random.Range(1, 5));
+            randomNum = (int)Mathf.Round(Random.Range(1, 6));
         }
         else
         {
