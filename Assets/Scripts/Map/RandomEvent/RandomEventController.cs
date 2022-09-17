@@ -5,8 +5,14 @@ public class RandomEventController : MonoBehaviour
 {
     public int randomNum;
 
+    PhotonView view;
     public EventVoids _eventVoids;
     public FlowOfTheGameController _gameController;
+
+    void Start()
+    {
+        view = GetComponent<PhotonView>();
+    }
 
     public void DrawNumber()
     {
@@ -41,52 +47,80 @@ public class RandomEventController : MonoBehaviour
                 {
                     //Making player or ball small
                     case 0:
-                        _eventVoids.ChangePlayersScale(0.3f);
+                        view.RPC("ChangePlayerBallScale", RpcTarget.AllBuffered, 0.3f, 0.8f);
                         break;
 
                     case 1:
-                        _eventVoids.ChangeBallScale(0.4f);
+                        view.RPC("ChangePlayerBallScale", RpcTarget.AllBuffered, 0.6f, 0.4f);
                         break;
 
                     case 2:
-                        _eventVoids.ChangePlayersScale(0.3f);
-                        _eventVoids.ChangeBallScale(0.4f);
+                        view.RPC("ChangePlayerBallScale", RpcTarget.AllBuffered, 0.3f, 0.4f);
                         break;
 
                     //Making player or ball big
                     case 3:
-                        _eventVoids.ChangePlayersScale(0.9f);
+                        view.RPC("ChangePlayerBallScale", RpcTarget.AllBuffered, 0.9f, 0.8f);
                         break;
 
                     case 4:
-                        _eventVoids.ChangeBallScale(1f);
+                        view.RPC("ChangePlayerBallScale", RpcTarget.AllBuffered, 0.6f, 1f);
                         break;
 
                     case 5:
-                        _eventVoids.ChangePlayersScale(0.9f);
-                        _eventVoids.ChangeBallScale(1f);
+                        view.RPC("ChangePlayerBallScale", RpcTarget.AllBuffered, 0.9f, 1f);
                         break;
                 }
                 break;
 
             //Changing something in map
             case 2:
+                DestroyGatesBall(true, false);
                 _eventVoids.WoodenGates();
                 break;
 
             case 3:
+                DestroyGatesBall(true, true);
                 _eventVoids.ExplosiveMode();
                 break;
 
             case 4:
+                DestroyGatesBall(false, true);
                 _eventVoids.DiscoMode();
                 break;
 
             case 5:
+                DestroyGatesBall(true, false);
                 _eventVoids.BaketballGates();
                 break;
         }
 
         _gameController.SetGatesToParent();
+    }
+
+    public void DestroyGatesBall(bool gates, bool ball)
+    {
+        if (gates)
+        {
+            for (int i = 0; i < _eventVoids.actualGates.Length; i++)
+            {
+                PhotonNetwork.Destroy(_eventVoids.actualGates[i]);
+            }
+        }
+
+        if (ball)
+        {
+            PhotonNetwork.Destroy(_eventVoids.ball);
+        }
+    }
+
+    [PunRPC]
+    void ChangePlayerBallScale(float playerScale, float ballScale)
+    {
+        _gameController.FindBall();
+        _gameController.FindPlayers();
+
+        _eventVoids.ChangePlayersScale(playerScale);
+        _eventVoids.ChangeBallScale(ballScale);
     }
 }
