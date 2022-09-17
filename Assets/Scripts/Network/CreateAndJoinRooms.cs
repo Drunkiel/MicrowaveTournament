@@ -12,7 +12,7 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public void CreateRoom()
     {
-        string hostPassword = String.Concat(createField.text);
+        string hostPassword = createField.text.Trim();
 
         if (createField.text != "" && hostPassword.Length >= 2) PhotonNetwork.CreateRoom(hostPassword);
         else _issuesController.ShowIssue("Warning: check if your code meets the requirements");
@@ -20,10 +20,10 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
     public void JoinRoom()
     {
-        string clientPassword = String.Concat(joinField.text);
+        string clientPassword = joinField.text.Trim();
 
-        if (createField.text != "" && clientPassword.Length >= 2) PhotonNetwork.JoinRoom(clientPassword);
-        else _issuesController.ShowIssue("Warning: check if your code is correct");
+        if (joinField.text != "" && clientPassword.Length >= 2) PhotonNetwork.JoinRoom(clientPassword);
+        else _issuesController.ShowIssue("Warning: check if your code is the same as host code");
     }
 
     public void QuitButton()
@@ -31,9 +31,14 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         Application.Quit();
     }
 
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        _issuesController.ShowIssue("Error: " + returnCode + "; " + message);
+    }
+
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        _issuesController.ShowIssue("Error {returnCode}: {message}");
+        _issuesController.ShowIssue("Error: " + returnCode + "; " + message);
     }
 
     public override void OnJoinedRoom()
