@@ -1,4 +1,3 @@
-using System.IO;
 using UnityEngine;
 using Photon.Pun;
 
@@ -13,7 +12,7 @@ public class EventVoids : MonoBehaviour
     public GameObject discoBall;
 
     //Gates
-    public GameObject[] gates;
+    public GameObject[] actualGates;
     public GameObject[] normalGates;
     public GameObject[] woodenGates;
     public GameObject[] steelGates;
@@ -42,19 +41,13 @@ public class EventVoids : MonoBehaviour
     public void ExplosiveMode()
     {
         _gameController.BallToSpawn(explosiveBall);
-        SteelGates();
+        _gameController.GatesToSpawn(steelGates[0], steelGates[1]);
     }
 
     [PunRPC]
     public void WoodenGates()
     {
         _gameController.GatesToSpawn(woodenGates[0], woodenGates[1]);
-    }
-
-    [PunRPC]
-    void SteelGates()
-    {
-        _gameController.GatesToSpawn(steelGates[0], steelGates[1]);
     }
 
     [PunRPC]

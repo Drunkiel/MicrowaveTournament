@@ -30,15 +30,15 @@ public class FlowOfTheGameController : MonoBehaviour
             {
                 if (foundGates[i].transform.childCount <= 1)
                 {
-                    _eventVoids.gates[0] = foundGates[i];
-                    _eventVoids.gates[1] = foundGates[++i];
+                    _eventVoids.actualGates[0] = foundGates[i];
+                    _eventVoids.actualGates[1] = foundGates[++i];
                     break;
                 }
 
                 if (foundGates[i].transform.childCount > 1)
                 {
-                    _eventVoids.gates[0] = foundGates[i].transform.parent.gameObject;
-                    _eventVoids.gates[1] = foundGates[i + 2].transform.parent.gameObject;
+                    _eventVoids.actualGates[0] = foundGates[i].transform.parent.gameObject;
+                    _eventVoids.actualGates[1] = foundGates[i + 2].transform.parent.gameObject;
                     break;
                 }
             }
@@ -54,61 +54,53 @@ public class FlowOfTheGameController : MonoBehaviour
     [PunRPC]
     public void ResetObjects()
     {
+        FindPlayers();
+        FindGates();
+        FindBall();
+
         //Reseting scale
         _eventVoids.ChangePlayersScale(0.6f);
         _eventVoids.ChangeBallScale(0.8f);
 
-        if (_eventVoids.ball.TryGetComponent(out ExplosiveBallController ballController))
-        {
-            BallToSpawn(_eventVoids.defaultBall);
-        }
+        //Reseting ball
+        BallToSpawn(_eventVoids.defaultBall);
 
-        //Destroying gates
-        for (int i = 0; i < _eventVoids.gates.Length; i++)
-        {
-            Destroy(_eventVoids.gates[i]);
-        }
-
-        //Spawning new gates
-        for (int i = 0; i < _eventVoids.gates.Length; i++)
-        {
-            if (i < _eventVoids.normalGates.Length)
-            {
-                PhotonNetwork.Instantiate(Path.Combine("Gates", _eventVoids.normalGates[i].name), Vector3.zero, Quaternion.identity);
-            }
-        }
+        //Reseting gates
+        GatesToSpawn(_eventVoids.normalGates[0], _eventVoids.normalGates[1]);
     }
 
     public void SetGatesToParent()
     {
         FindGates();
 
-        if (_eventVoids.gates.Length == 2)
+        if (_eventVoids.actualGates.Length == 2)
         {
             for (int i = 0; i < _eventVoids.parents.Length; i++)
             {
-                _eventVoids.gates[i].transform.SetParent(_eventVoids.parents[i]);
+                _eventVoids.actualGates[i].transform.SetParent(_eventVoids.parents[i]);
             }
         }
 
-        if (_eventVoids.gates.Length == 4)
+        if (_eventVoids.actualGates.Length == 4)
         {
-            _eventVoids.gates[0].transform.parent.transform.SetParent(_eventVoids.parents[0]);
-            _eventVoids.gates[2].transform.parent.transform.SetParent(_eventVoids.parents[1]);
+            _eventVoids.actualGates[0].transform.parent.transform.SetParent(_eventVoids.parents[0]);
+            _eventVoids.actualGates[2].transform.parent.transform.SetParent(_eventVoids.parents[1]);
         }
     }
 
+    [PunRPC]
     public void GatesToSpawn(GameObject gateLeftName, GameObject gateRightName)
     {
         GameObject[] gatesToSpawn = new GameObject[2] { gateLeftName, gateRightName };
 
-        for (int i = 0; i < _eventVoids.gates.Length; i++)
+        for (int i = 0; i < _eventVoids.actualGates.Length; i++)
         {
-            PhotonNetwork.Destroy(_eventVoids.gates[i]);
+            PhotonNetwork.Destroy(_eventVoids.actualGates[i]);
             PhotonNetwork.Instantiate(Path.Combine("Gates", gatesToSpawn[i].name), gatesToSpawn[i].transform.position, Quaternion.identity);
         }
     }
 
+    [PunRPC]
     public void BallToSpawn(GameObject ballName)
     {
         PhotonNetwork.Destroy(_eventVoids.ball);
