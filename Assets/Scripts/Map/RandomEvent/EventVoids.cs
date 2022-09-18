@@ -26,6 +26,8 @@ public class EventVoids : MonoBehaviour
 
     public void ChangePlayersScale(float scale)
     {
+        _gameController.FindPlayers();
+
         foreach (GameObject player in players)
         {
             player.transform.localScale = new Vector3(scale, scale, scale);
@@ -34,6 +36,8 @@ public class EventVoids : MonoBehaviour
 
     public void ChangeBallScale(float scale)
     {
+        _gameController.FindBall();
+
         ball.transform.localScale = new Vector3(scale, scale, scale);
     }
 

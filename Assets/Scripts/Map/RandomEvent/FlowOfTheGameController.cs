@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using UnityEngine;
 using Photon.Pun;
@@ -28,14 +29,14 @@ public class FlowOfTheGameController : MonoBehaviour
         {
             if (foundGates[i] != null)
             {
-                if (foundGates[i].transform.childCount <= 1)
+                if (foundGates[i].transform.childCount <= 1 && !foundGates[i].name.Contains("Part"))
                 {
                     _eventVoids.actualGates[0] = foundGates[i];
                     _eventVoids.actualGates[1] = foundGates[++i];
                     break;
                 }
 
-                if (foundGates[i].transform.childCount > 1)
+                if (foundGates[i].transform.parent.childCount > 1)
                 {
                     _eventVoids.actualGates[0] = foundGates[i].transform.parent.gameObject;
                     _eventVoids.actualGates[1] = foundGates[i + 2].transform.parent.gameObject;

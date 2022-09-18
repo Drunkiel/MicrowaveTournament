@@ -19,10 +19,12 @@ public class RandomEventController : MonoBehaviour
         if (!PhotonNetwork.IsMasterClient) return;
 
         int num = (int)Mathf.Round(Random.Range(0, 4));
+        num = 3;
 
         if (num == 3)
         {
             randomNum = (int)Mathf.Round(Random.Range(1, 6));
+            randomNum = 2;
         }
         else
         {
@@ -117,9 +119,6 @@ public class RandomEventController : MonoBehaviour
     [PunRPC]
     void ChangePlayerBallScale(float playerScale, float ballScale)
     {
-        _gameController.FindBall();
-        _gameController.FindPlayers();
-
         _eventVoids.ChangePlayersScale(playerScale);
         _eventVoids.ChangeBallScale(ballScale);
     }
