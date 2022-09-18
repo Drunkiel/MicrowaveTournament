@@ -1,16 +1,41 @@
 using UnityEngine;
+using Photon.Pun;
 
 public class PlatformAttach : MonoBehaviour
 {
     public string objectTag;
+    private Collider objectCollider;
+    private Transform objectTransform;
 
-    private void OnTriggerEnter(Collider other)
+    PhotonView view;
+
+    void Start()
     {
-        if (other.gameObject.tag == objectTag) other.gameObject.transform.parent = transform;
+        view = GetComponent<PhotonView>();
     }
 
-    private void OnTriggerExit(Collider other)
+    void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == objectTag) other.gameObject.transform.parent = null;
+        if (other.gameObject.tag == objectTag)
+        {
+            objectCollider = other;
+            objectTransform = gameObject.transform;
+            view.RPC("SetToObject", RpcTarget.AllBuffered);
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == objectTag)
+        {
+            objectTransform = null;
+            view.RPC("SetToObject", RpcTarget.AllBuffered);
+        }
+    }
+
+    [PunRPC]
+    void SetToObject()
+    {
+        objectCollider.gameObject.transform.parent = objectTransform;
     }
 }
