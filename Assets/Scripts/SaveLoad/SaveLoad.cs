@@ -9,6 +9,7 @@ public class SaveLoad : MonoBehaviour
 
     private string jsonSavePath;
     public SettingsData _settingsData;
+    public GameGraphicsController _graphicsController;
 
     void Awake()
     {
@@ -24,8 +25,14 @@ public class SaveLoad : MonoBehaviour
         //Zapisywanie danych
         string jsonData = JsonUtility.ToJson(_settingsData, true);
 
+        //Audio
         _settingsData.musicVolume = musicSlider.value;
         _settingsData.effectsVolume = effectsSlider.value;
+
+        //Graphics
+        _settingsData.fullScreen = _graphicsController.fullscreen;
+        _settingsData.vSync = _graphicsController.vsync;
+        _settingsData.resolutionValue = _graphicsController.resolutionDropdown.value;
 
         File1.Close();
         File.WriteAllText(jsonSavePath, jsonData);
@@ -33,14 +40,20 @@ public class SaveLoad : MonoBehaviour
 
     public void Load()
     {
-        if (Directory.Exists(jsonSavePath))
+        if (File.Exists(jsonSavePath))
         {
             string json = ReadFromFile();
             JsonUtility.FromJsonOverwrite(json, _settingsData);
 
             //£adowanie danych
+            //Audio
             musicSlider.value = _settingsData.musicVolume;
             effectsSlider.value = _settingsData.effectsVolume;
+
+            //Graphics
+            _graphicsController.fullscreen = _settingsData.fullScreen;
+            _graphicsController.vsync = _settingsData.vSync;
+            _graphicsController.resolutionDropdown.value = _settingsData.resolutionValue;
         }
     }
 
