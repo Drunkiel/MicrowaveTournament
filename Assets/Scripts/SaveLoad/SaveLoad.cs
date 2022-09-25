@@ -30,8 +30,8 @@ public class SaveLoad : MonoBehaviour
         _settingsData.effectsVolume = effectsSlider.value;
 
         //Graphics
-        _settingsData.fullScreen = _graphicsController.fullscreen;
-        _settingsData.vSync = _graphicsController.vsync;
+        _settingsData.fullScreen = _graphicsController.fullScreen;
+        _settingsData.vSync = _graphicsController.vSync;
         _settingsData.resolutionValue = _graphicsController.resolutionDropdown.value;
 
         File1.Close();
@@ -51,9 +51,10 @@ public class SaveLoad : MonoBehaviour
             effectsSlider.value = _settingsData.effectsVolume;
 
             //Graphics
-            _graphicsController.fullscreen = _settingsData.fullScreen;
-            _graphicsController.vsync = _settingsData.vSync;
-            _graphicsController.resolutionDropdown.value = _settingsData.resolutionValue;
+            _graphicsController.fullScreen = _settingsData.fullScreen;
+            _graphicsController.vSync = _settingsData.vSync;
+            _graphicsController.resolutionValue = _settingsData.resolutionValue;
+            _graphicsController.UpdateGraphics();
         }
     }
 
