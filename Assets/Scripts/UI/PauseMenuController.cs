@@ -34,6 +34,7 @@ public class PauseMenuController : MonoBehaviourPunCallbacks
     [PunRPC]
     public void ResumeGameButton()
     {
+        Cursor.visible = false;
         view.RPC("ResumeGame", RpcTarget.AllBuffered);
     }
 
@@ -63,6 +64,7 @@ public class PauseMenuController : MonoBehaviourPunCallbacks
     void PauseGameButton()
     {
         Time.timeScale = 0f;
+        Cursor.visible = true;
         OpenCloseUI(UI, true);
         isGamePaused = true;
     }
@@ -83,6 +85,7 @@ public class PauseMenuController : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
+        Cursor.visible = true;
         PhotonNetwork.LoadLevel("Lobby");
     }
 }

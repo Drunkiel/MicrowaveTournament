@@ -10,6 +10,7 @@ public class GameState
     public ScoreController _scoreController;
     public GameWinMenuController _gameWinMenu;
     public LoadingScreen _loadingScreen;
+    public MapPicker _mapPicker;
 
     //To reset
     public GameObject[] players;
@@ -19,7 +20,6 @@ public class GameState
     public WoodenGateController[]? _woodenGates;
 #nullable disable
     public int num;
-    public MapPicker mapPicker;
 
     [PunRPC]
     public void ResetGate()
@@ -34,7 +34,7 @@ public class GameState
             }
 
             //Checking if there are parts
-            if (actualGates[i].transform.childCount != 0)
+            if (actualGates[i].transform.childCount > 1)
             {
                 Transform[] childs = new Transform[actualGates.Length * actualGates[0].transform.childCount];
 
@@ -114,7 +114,7 @@ public class GameState
     void GetGates()
     {
         _gameController.FindGates();
-        GameObject[] allGates = _eventController._eventVoids.gates;
+        GameObject[] allGates = _eventController._eventVoids.actualGates;
 
         if (allGates.Length == 2)
         {
@@ -166,6 +166,7 @@ public class GameState
     {
         _scoreController.PlayerOneWinnedMaps = 0;
         _scoreController.PlayerTwoWinnedMaps = 0;
+        Cursor.visible = true;
 
         _gameWinMenu.OpenMenu();
     }
@@ -182,8 +183,7 @@ public class GameState
             _eventController.DrawNumber();
             _eventController.PickEvent();
         }
-        mapPicker.PickMap();
-
-        _gameController.FindBall();
+        _gameController.ResetObjects();
+        _mapPicker.PickMap();
     }
 }
