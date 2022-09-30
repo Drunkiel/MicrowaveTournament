@@ -19,6 +19,10 @@ public class ShowText : MonoBehaviour
         isBlueTeam = transform.parent.GetComponent<RandomAppearanceController>().isBlueTeam;
 
         string textToShow = texts.PickText(isBlueTeam);
+
+        if (isBlueTeam) showingText.color = new Color32(15, 45, 144, 255);
+        else showingText.color = new Color32(144, 15, 16, 255);
+
         showingText.text = textToShow;
     }
 }
