@@ -10,6 +10,7 @@ public class SaveLoad : MonoBehaviour
     private string jsonSavePath;
     public SettingsData _settingsData;
     public GameGraphicsController _graphicsController;
+    public GameUIController _gameUI;
 
     void Awake()
     {
@@ -34,6 +35,9 @@ public class SaveLoad : MonoBehaviour
         _settingsData.vSync = _graphicsController.vSync;
         _settingsData.resolutionValue = _graphicsController.resolutionDropdown.value;
 
+        //GUI
+        _settingsData.showingInfo = _gameUI.menuInfoToggle.isOn;
+
         File1.Close();
         File.WriteAllText(jsonSavePath, jsonData);
     }
@@ -55,6 +59,9 @@ public class SaveLoad : MonoBehaviour
             _graphicsController.vSync = _settingsData.vSync;
             _graphicsController.resolutionValue = _settingsData.resolutionValue;
             _graphicsController.UpdateGraphics();
+
+            //GUI
+            _gameUI.menuInfoToggle.isOn = _settingsData.showingInfo;
         }
     }
 

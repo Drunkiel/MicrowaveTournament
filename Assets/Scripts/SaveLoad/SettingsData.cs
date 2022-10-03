@@ -7,4 +7,6 @@ public class SettingsData
     public bool fullScreen;
     public bool vSync;
     public int resolutionValue;
+
+    public bool showingInfo;
 }
