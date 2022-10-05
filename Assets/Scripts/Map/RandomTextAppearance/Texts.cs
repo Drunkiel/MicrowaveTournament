@@ -8,15 +8,15 @@ public class Texts
 
     public string PickText(bool team)
     {
-        if (!team)
-        {
-            string blueTeamText = blueTeamTexts[Random.Range(0, blueTeamTexts.Length)];
-            return blueTeamText;
-        }
-        else
+        if (team)
         {
             string redTeamText = redTeamTexts[Random.Range(0, redTeamTexts.Length)];
             return redTeamText;
+        }
+        else
+        {
+            string blueTeamText = blueTeamTexts[Random.Range(0, blueTeamTexts.Length)];
+            return blueTeamText;
         }
     }
 }

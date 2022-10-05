@@ -3,7 +3,7 @@ using TMPro;
 
 public class ShowText : MonoBehaviour
 {
-    public bool isBlueTeam;
+    public bool isRedTeam;
     private TMP_Text showingText;
 
     public Texts texts;
@@ -16,12 +16,12 @@ public class ShowText : MonoBehaviour
 
     public void DisplayRandomText()
     {
-        isBlueTeam = transform.parent.GetComponent<RandomAppearanceController>().isBlueTeam;
+        isRedTeam = transform.parent.GetComponent<RandomAppearanceController>().isBlueTeam;
 
-        string textToShow = texts.PickText(isBlueTeam);
+        string textToShow = texts.PickText(isRedTeam);
 
-        if (isBlueTeam) showingText.color = new Color32(15, 45, 144, 255);
-        else showingText.color = new Color32(144, 15, 16, 255);
+        if (isRedTeam) showingText.color = new Color32(144, 15, 16, 255);
+        else showingText.color = new Color32(15, 45, 144, 255);
 
         showingText.text = textToShow;
     }
