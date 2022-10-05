@@ -81,7 +81,7 @@ public class DesertMap : MonoBehaviour
 
             WindAnimation();
 
-            ball.AddForce(new Vector2(windSpeed / 10 * multiplier, 0)); // Add windSpeed / 10
+            ball.AddForce(new Vector2(windSpeed * multiplier, 0));
         }
         else
         {

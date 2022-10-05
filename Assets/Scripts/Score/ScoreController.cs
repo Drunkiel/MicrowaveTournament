@@ -6,7 +6,7 @@ public class ScoreController : MonoBehaviourPunCallbacks
 {
     public int scoreForPlayerOne;
     public int scoreForPlayerTwo;
-    public TMP_Text score;
+    public TMP_Text[] score;
 
     public int PlayerOneWinnedMaps;
     public int PlayerTwoWinnedMaps;
@@ -32,9 +32,11 @@ public class ScoreController : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        score.text = scoreForPlayerOne.ToString() + " | " + scoreForPlayerTwo.ToString();
+        score[0].text = scoreForPlayerOne.ToString();
+        score[1].text = scoreForPlayerTwo.ToString();
+
         if (scoreForPlayerOne >= 4 || scoreForPlayerTwo >= 4) view.RPC("CheckRoundWinner", RpcTarget.AllBuffered);
-        if (PlayerOneWinnedMaps == 3 || PlayerTwoWinnedMaps == 3) view.RPC("CheckGameWinner", RpcTarget.AllBuffered);
+        if (PlayerOneWinnedMaps == 4 || PlayerTwoWinnedMaps == 4) view.RPC("CheckGameWinner", RpcTarget.AllBuffered);
     }
 
     [PunRPC]
@@ -93,13 +95,13 @@ public class ScoreController : MonoBehaviourPunCallbacks
     [PunRPC]
     void CheckGameWinner()
     {
-        if (PlayerOneWinnedMaps == 3)
+        if (PlayerOneWinnedMaps == 4)
         {
             team.color = new Color32(15, 45, 144, 255);
             team.text = "Team blue";
         }
 
-        if (PlayerTwoWinnedMaps == 3)
+        if (PlayerTwoWinnedMaps == 4)
         {
             team.color = new Color32(144, 15, 16, 255);
             team.text = "Team red";

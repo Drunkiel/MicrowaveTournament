@@ -21,6 +21,9 @@ Assets/[Mm]odels/
 Assets/[Tt]extMesh Pro/
 Assets/[Tt]hirdparty
 Assets/[Mm]usic
+Assets/[Pp]hoton/
+Assets/InitCodeMarker
+Assets/[Ss]oundEffects/
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
