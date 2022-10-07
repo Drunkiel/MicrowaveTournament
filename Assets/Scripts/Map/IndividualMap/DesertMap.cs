@@ -5,7 +5,6 @@ using Photon.Pun;
 
 public class DesertMap : MonoBehaviour
 {
-    public float windSpeed;
     public int multiplier;
     public int oldMultiplier;
     public int previousMultiplier;
@@ -14,16 +13,16 @@ public class DesertMap : MonoBehaviour
     public float cooldown;
     public float resCooldown;
 
-    public GameObject[] players;
     public GameObject windParticle;
-    public Rigidbody ball;
+
+    WindController _windController;
 
     // Start is called before the first frame update
     void Start()
     {
         if (!PhotonNetwork.IsMasterClient) Destroy(GetComponent<DesertMap>());
 
-        players = GameObject.FindGameObjectsWithTag("Player");
+        _windController = GetComponent<WindController>();
         oldMultiplier = GameObject.FindGameObjectWithTag("MainCamera").transform.GetChild(0).GetComponent<ScoreController>()._gameState.num;
     }
 
@@ -41,7 +40,8 @@ public class DesertMap : MonoBehaviour
             cooldown -= Time.deltaTime;
         }
 
-        Wind();
+        _windController.Wind(multiplier);
+        WindAnimation();
     }
 
     void DrawNumber()
@@ -64,29 +64,9 @@ public class DesertMap : MonoBehaviour
         else
         {
             StartCoroutine("RestTime");
-            ball = GameObject.FindGameObjectWithTag("Ball").GetComponent<Rigidbody>();
         }
 
         previousMultiplier = multiplier;
-    }
-
-    void Wind()
-    {
-        if (multiplier != 0)
-        {
-            for (int i = 0; i < players.Length; i++)
-            {
-                players[i].GetComponent<Rigidbody>().AddForce(new Vector2(windSpeed * multiplier, 4));
-            }
-
-            WindAnimation();
-
-            ball.AddForce(new Vector2(windSpeed * multiplier, 0));
-        }
-        else
-        {
-            isParticle = false;
-        }
     }
 
     void WindAnimation()
