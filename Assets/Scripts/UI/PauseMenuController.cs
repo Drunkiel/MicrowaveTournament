@@ -9,6 +9,7 @@ public class PauseMenuController : MonoBehaviourPunCallbacks
     public GameObject OptionsUI;
     public GameObject CreditsUI;
 
+    public DisconnectPlayers _disconnectPlayers;
     PhotonView view;
 
     void Start()
@@ -51,7 +52,7 @@ public class PauseMenuController : MonoBehaviourPunCallbacks
     public void BackButton()
     {
         ResumeGame();
-        PhotonNetwork.LeaveRoom();
+        _disconnectPlayers.Disconnect();
     }
 
     public void CloseButton()
