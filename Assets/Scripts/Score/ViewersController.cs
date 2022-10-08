@@ -10,14 +10,20 @@ public class ViewersController
 
     public void SpawnViewers()
     {
-        for (int i = 0; i < _scoreController.PlayerOneWinnedMaps; i++)
+        if (_scoreController.PlayerOneWinnedMaps <= blueViewers.Length)
         {
-            blueViewers[i].SetActive(true);
+            for (int i = 0; i < _scoreController.PlayerOneWinnedMaps; i++)
+            {
+                blueViewers[i].SetActive(true);
+            }
         }
 
-        for (int i = 0; i < _scoreController.PlayerTwoWinnedMaps; i++)
+        if(_scoreController.PlayerTwoWinnedMaps <= redViewers.Length)
         {
-            redViewers[i].SetActive(true);
+            for (int i = 0; i < _scoreController.PlayerTwoWinnedMaps; i++)
+            {
+                redViewers[i].SetActive(true);
+            }
         }
     }
 
