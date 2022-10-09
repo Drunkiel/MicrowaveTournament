@@ -1,15 +1,12 @@
 using UnityEngine;
-using UnityEngine.UI;
 using System.IO;
 
 public class SaveLoad : MonoBehaviour
 {
-    public Slider musicSlider;
-    public Slider effectsSlider;
-
     private string jsonSavePath;
     public SettingsData _settingsData;
     public GameGraphicsController _graphicsController;
+    public GameAudioController _audioController;
     public GameUIController _gameUI;
 
     void Awake()
@@ -27,8 +24,8 @@ public class SaveLoad : MonoBehaviour
         string jsonData = JsonUtility.ToJson(_settingsData, true);
 
         //Audio
-        _settingsData.musicVolume = musicSlider.value;
-        _settingsData.effectsVolume = effectsSlider.value;
+        _settingsData.musicVolume = _audioController.musicSlider.value;
+        _settingsData.effectsVolume = _audioController.effectsSlider.value;
 
         //Graphics
         _settingsData.fullScreen = _graphicsController.fullScreen;
@@ -51,8 +48,8 @@ public class SaveLoad : MonoBehaviour
 
             //£adowanie danych
             //Audio
-            musicSlider.value = _settingsData.musicVolume;
-            effectsSlider.value = _settingsData.effectsVolume;
+            _audioController.musicSlider.value = _settingsData.musicVolume;
+            _audioController.effectsSlider.value = _settingsData.effectsVolume;
 
             //Graphics
             _graphicsController.fullScreen = _settingsData.fullScreen;
