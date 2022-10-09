@@ -7,7 +7,7 @@ public class EffectVolumeController : MonoBehaviour
 
     void Start()
     {
-        effectSlider = GameObject.FindGameObjectWithTag("EffectSlider").GetComponent<Slider>();
+        effectSlider = GameObject.FindGameObjectWithTag("SaveLoad").GetComponent<SaveLoad>()._audioController.effectsSlider;
         SetEffectSource();
     }
 
