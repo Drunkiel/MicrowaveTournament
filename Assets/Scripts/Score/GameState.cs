@@ -83,6 +83,13 @@ public class GameState
     {
         _gameController.FindBall();
 
+        GetPlayers();
+        foreach (GameObject player in players)
+        {
+            player.GetComponent<DoorController>().isBallPicked = false;
+        }
+
+        _ballController.transform.parent = null;
         _ballController.transform.position = new Vector2(0, 2.2f);
         _ballController.StopBall();
         _ballController.rgBody.AddForce(new Vector2(_ballController.startVector.x * goLeft, 0), ForceMode.Impulse);
@@ -90,8 +97,7 @@ public class GameState
 
     public void ResetPlayers()
     {
-        _gameController.FindPlayers();
-        players = _eventController._eventVoids.players;
+        GetPlayers();
 
         for (int i = 0; i < players.Length; i++)
         {
@@ -125,6 +131,12 @@ public class GameState
             actualGates[0] = allGates[0].transform.parent.gameObject;
             actualGates[1] = allGates[2].transform.parent.gameObject;
         }
+    }
+
+    void GetPlayers()
+    {
+        _gameController.FindPlayers();
+        players = _eventController._eventVoids.players;
     }
 
     [PunRPC]

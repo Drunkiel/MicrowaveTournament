@@ -44,6 +44,7 @@ public class ShootController : MonoBehaviour
             ballLaunched = true;
             chargedPower = 0;
 
+            _doorController.ballCollider.transform.parent = null;
             _doorController.ballCollider.GetComponent<Rigidbody>().velocity = Vector3.ClampMagnitude(new Vector2(difference.x * 10, difference.y * 10), 20);
         }
     }
