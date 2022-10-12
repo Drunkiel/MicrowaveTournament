@@ -93,7 +93,6 @@ public class DoorController : MonoBehaviour
     [PunRPC]
     void PickBall()
     {
-        ballCollider.transform.parent = transform;
         ballCollider.transform.position = new Vector2(tester.position.x, tester.position.y);
     }
 }

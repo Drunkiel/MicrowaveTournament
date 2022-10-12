@@ -89,7 +89,6 @@ public class GameState
             player.GetComponent<DoorController>().isBallPicked = false;
         }
 
-        _ballController.transform.parent = null;
         _ballController.transform.position = new Vector2(0, 2.2f);
         _ballController.StopBall();
         _ballController.rgBody.AddForce(new Vector2(_ballController.startVector.x * goLeft, 0), ForceMode.Impulse);
