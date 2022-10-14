@@ -40,7 +40,7 @@ public class DesertMap : MonoBehaviour
             cooldown -= Time.deltaTime;
         }
 
-        _windController.Wind(multiplier);
+        _windController.Wind(multiplier, 1, 1);
         WindAnimation();
     }
 

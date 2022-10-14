@@ -32,7 +32,7 @@ public class HalloweenMap : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Splash();
+        view.RPC("Splash", RpcTarget.AllBuffered);
 
         if (remainingTime > 0) CheckTimer();
         else
@@ -41,6 +41,7 @@ public class HalloweenMap : MonoBehaviour
         }
     }
 
+    [PunRPC]
     void Splash()
     {
         if (_triggerController.isTriggered && !isAfterTrigger)

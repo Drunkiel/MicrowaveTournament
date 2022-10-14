@@ -10,7 +10,7 @@ public class GameVersion : MonoBehaviour
     void Awake()
     {
         CheckVersion();
-        gameVersionText.text = "Alpha: " + version;
+        gameVersionText.text = "Beta: " + version;
     }
 
     void CheckVersion()
