@@ -1,21 +1,25 @@
-using System;
+using Photon.Pun;
+using Photon.Realtime;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Photon.Pun;
 
 public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 {
-    public InputField createField;
+    public string password;
+    public TMP_Text passwordText;
     public InputField joinField;
 
     public IssuesController _issuesController;
 
+    void Start()
+    {
+        ResetPassword();
+    }
+
     public void CreateRoom()
     {
-        string hostPassword = createField.text.Trim();
-
-        if (createField.text != "" && hostPassword.Length >= 2) PhotonNetwork.CreateRoom(hostPassword);
-        else _issuesController.ShowIssue("Warning: check if your code meets the requirements");
+        PhotonNetwork.CreateRoom(password, new RoomOptions { MaxPlayers = 2 });
     }
 
     public void JoinRoom()
@@ -26,14 +30,15 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         else _issuesController.ShowIssue("Warning: check if your code is the same as host code");
     }
 
-    public void QuitButton()
+    public override void OnJoinedRoom()
     {
-        Application.Quit();
+        PhotonNetwork.LoadLevel("Main");
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         _issuesController.ShowIssue("Error: " + returnCode + "; " + message);
+        ResetPassword();
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -41,8 +46,29 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
         _issuesController.ShowIssue("Error: " + returnCode + "; " + message);
     }
 
-    public override void OnJoinedRoom()
+    public void QuitButton()
     {
-        PhotonNetwork.LoadLevel("Main");
+        Application.Quit();
+    }
+
+    void ResetPassword()
+    {
+        password = RandomPassword();
+        passwordText.text = password;
+    }
+
+    string RandomPassword()
+    {
+        string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        char[] stringChars = new char[5];
+
+        for (int i = 0; i < stringChars.Length; i++)
+        {
+            int randomNumber = Random.Range(0, chars.Length);
+            stringChars[i] = chars[randomNumber];
+        }
+
+        var finalString = new string(stringChars);
+        return finalString;
     }
 }
