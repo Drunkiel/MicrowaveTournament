@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Discord;
 
@@ -14,9 +12,9 @@ public class DiscordController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        discord = new Discord.Discord(1011193121507377162, (System.UInt64)Discord.CreateFlags.Default);
+        discord = new Discord.Discord(1011193121507377162, (System.UInt64)CreateFlags.Default);
         var activityManager = discord.GetActivityManager();
-        var activity = new Discord.Activity
+        var activity = new Activity
         {
             State = stateTextToShow + ": " + Application.version,
             Details = detailsTextToShow,
@@ -33,7 +31,7 @@ public class DiscordController : MonoBehaviour
 
         activityManager.UpdateActivity(activity, (res) =>
         {
-            if (res == Discord.Result.Ok)
+            if (res == Result.Ok)
             {
                 Debug.Log("Everything is fine!");
             }
