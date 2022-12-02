@@ -22,7 +22,7 @@ public class MapPicker : MonoBehaviour
     public void PickMap()
     {
         //Reseting players
-        ScoreController _scoreController = GameObject.FindGameObjectWithTag("MainCamera").GetComponentInChildren<ScoreController>();
+        ScoreController _scoreController = GameObject.FindGameObjectWithTag("CameraUI").GetComponentInChildren<ScoreController>();
         _scoreController._gameState.ResetPlayers();
 
         if (!PhotonNetwork.IsMasterClient) return;

@@ -26,7 +26,7 @@ public class HalloweenMap : MonoBehaviour
     {
         if (!PhotonNetwork.IsMasterClient) Destroy(GetComponent<HalloweenMap>());
         view = GetComponent<PhotonView>();
-        _scoreController = GameObject.FindGameObjectWithTag("MainCamera").GetComponentInChildren<ScoreController>();
+        _scoreController = GameObject.FindGameObjectWithTag("CameraUI").GetComponentInChildren<ScoreController>();
     }
 
     // Update is called once per frame

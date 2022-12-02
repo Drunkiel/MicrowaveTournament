@@ -23,7 +23,7 @@ public class DesertMap : MonoBehaviour
         if (!PhotonNetwork.IsMasterClient) Destroy(GetComponent<DesertMap>());
 
         _windController = GetComponent<WindController>();
-        oldMultiplier = GameObject.FindGameObjectWithTag("MainCamera").transform.GetChild(0).GetComponent<ScoreController>()._gameState.num;
+        oldMultiplier = GameObject.FindGameObjectWithTag("CameraUI").transform.GetChild(0).GetComponent<ScoreController>()._gameState.num;
     }
 
     // Update is called once per frame

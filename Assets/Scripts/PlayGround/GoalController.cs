@@ -13,7 +13,7 @@ public class GoalController : MonoBehaviour
     void Start()
     {
         view = GetComponent<PhotonView>();
-        _scoreController = GameObject.FindGameObjectWithTag("MainCamera").transform.GetChild(0).GetComponent<ScoreController>();
+        _scoreController = GameObject.FindGameObjectWithTag("CameraUI").transform.GetChild(0).GetComponent<ScoreController>();
     }
 
     [PunRPC]
