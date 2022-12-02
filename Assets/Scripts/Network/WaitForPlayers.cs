@@ -20,7 +20,7 @@ public class WaitForPlayers : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (PhotonNetwork.CountOfPlayers == 2)
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
             isEnoughtPlayers = true;
         }
@@ -31,7 +31,7 @@ public class WaitForPlayers : MonoBehaviour
 
         if (!isEnoughtPlayers)
         {
-            StopTime();
+            view.RPC("StopTime", RpcTarget.AllBuffered);
         }
         else
         {
@@ -39,6 +39,7 @@ public class WaitForPlayers : MonoBehaviour
         }
     }
 
+    [PunRPC]
     void StopTime()
     {
         GetBall();
