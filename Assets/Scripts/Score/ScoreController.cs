@@ -1,9 +1,12 @@
 using UnityEngine;
 using Photon.Pun;
 using TMPro;
+using System.Collections;
 
 public class ScoreController : MonoBehaviourPunCallbacks
 {
+    public bool gameRunning;
+
     public int scoreForPlayerOne;
     public int scoreForPlayerTwo;
     public TMP_Text[] score;
@@ -15,6 +18,7 @@ public class ScoreController : MonoBehaviourPunCallbacks
     public GameObject gameWinParticle;
 
     public GameState _gameState;
+    public CameraController _cameraController;
     public ViewersController _viewersController;
     PhotonView view;
 
@@ -47,17 +51,19 @@ public class ScoreController : MonoBehaviourPunCallbacks
             scoreForPlayerOne++;
             _gameState.num = -1;
             _spawnText.BlueScored();
-            Instantiate(goalParticle, new Vector3(-9, -1.7f, 0), Quaternion.identity);
+            _cameraController.BlueGoal();
+            Instantiate(goalParticle, new Vector3(9, -1.7f, 0), Quaternion.Euler(0, 180, 0));
         }
         else
         {
             scoreForPlayerTwo++;
             _gameState.num = 1;
             _spawnText.RedScored();
-            Instantiate(goalParticle, new Vector3(9, -1.7f, 0), Quaternion.Euler(0, 180, 0));
+            _cameraController.RedGoal();
+            Instantiate(goalParticle, new Vector3(-9, -1.7f, 0), Quaternion.identity);
         }
 
-        view.RPC("ResetGateBallDoors", RpcTarget.AllBuffered);
+        StartCoroutine("Goal");
     }
 
     [PunRPC]
@@ -130,14 +136,23 @@ public class ScoreController : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
+    void SpawnViewers()
+    {
+        _viewersController.SpawnViewers();
+    }
+
+    [PunRPC]
     void DespawnViewers()
     {
         _viewersController.DespawnViewers();
     }
 
-    [PunRPC]
-    void SpawnViewers()
+    IEnumerator Goal()
     {
-        _viewersController.SpawnViewers();
+        _gameState._ballController.StopBall();
+
+        yield return new WaitForSeconds(1.6f);
+
+        view.RPC("ResetGateBallDoors", RpcTarget.AllBuffered);
     }
 }
