@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.IO;
+using System.Threading.Tasks;
 
 public class SaveLoad : MonoBehaviour
 {
@@ -15,28 +16,9 @@ public class SaveLoad : MonoBehaviour
         Load();
     }
 
-    public void Save()
+    public async void Save()
     {
-        //Tworzenie pliku i jego lokalizacji
-        FileStream File1 = new FileStream(jsonSavePath, FileMode.OpenOrCreate);
-
-        //Zapisywanie danych
-        string jsonData = JsonUtility.ToJson(_settingsData, true);
-
-        //Audio
-        _settingsData.musicVolume = _audioController.musicSlider.value;
-        _settingsData.effectsVolume = _audioController.effectsSlider.value;
-
-        //Graphics
-        _settingsData.fullScreen = _graphicsController.fullScreen;
-        _settingsData.vSync = _graphicsController.vSync;
-        _settingsData.resolutionValue = _graphicsController.resolutionDropdown.value;
-
-        //GUI
-        _settingsData.showingInfo = _gameUI.menuInfoToggle.isOn;
-
-        File1.Close();
-        File.WriteAllText(jsonSavePath, jsonData);
+        await SaveData();
     }
 
     public void Load()
@@ -62,11 +44,39 @@ public class SaveLoad : MonoBehaviour
         }
     }
 
+    public Task SaveData()
+    {
+        return Task.Factory.StartNew(() =>
+        {
+            //Tworzenie pliku i jego lokalizacji
+            FileStream File1 = new FileStream(jsonSavePath, FileMode.OpenOrCreate);
+
+            //Zapisywanie danych
+            string jsonData = JsonUtility.ToJson(_settingsData, true);
+
+            //Audio
+            _settingsData.musicVolume = _audioController.musicSlider.value;
+            _settingsData.effectsVolume = _audioController.effectsSlider.value;
+
+            //Graphics
+            _settingsData.fullScreen = _graphicsController.fullScreen;
+            _settingsData.vSync = _graphicsController.vSync;
+            _settingsData.resolutionValue = _graphicsController.resolutionDropdown.value;
+
+            //GUI
+            _settingsData.showingInfo = _gameUI.menuInfoToggle.isOn;
+
+            File1.Close();
+            File.WriteAllText(jsonSavePath, jsonData);
+        });
+    }
+
     private string ReadFromFile()
     {
         using (StreamReader Reader = new StreamReader(jsonSavePath))
         {
             string json = Reader.ReadToEnd();
+            Reader.Close();
             return json;
         }
     }
