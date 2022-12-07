@@ -24,7 +24,6 @@ public class HalloweenMap : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (!PhotonNetwork.IsMasterClient) Destroy(GetComponent<HalloweenMap>());
         view = GetComponent<PhotonView>();
         _scoreController = GameObject.FindGameObjectWithTag("CameraUI").GetComponentInChildren<ScoreController>();
     }
@@ -32,7 +31,17 @@ public class HalloweenMap : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        view.RPC("Splash", RpcTarget.AllBuffered);
+        if (!PhotonNetwork.IsMasterClient) return;
+
+        if (_triggerController.isTriggered && !isAfterTrigger)
+        {
+            view.RPC("Splash", RpcTarget.AllBuffered);
+        }
+        else
+        {
+            isAfterTrigger = false;
+        }
+        
 
         if (remainingTime > 0) CheckTimer();
         else
@@ -44,18 +53,11 @@ public class HalloweenMap : MonoBehaviour
     [PunRPC]
     void Splash()
     {
-        if (_triggerController.isTriggered && !isAfterTrigger)
-        {
-            PhotonNetwork.Instantiate(Path.Combine("Particles", splashPrefab.name), new Vector3(0, 3.3f, 0), Quaternion.Euler(-90, 0, 0));
-            score++;
-            scoreText.text = score.ToString();
-            _scoreController._gameState.ResetBall(_scoreController._gameState.num);
-            isAfterTrigger = true;
-        }
-        else
-        {
-            isAfterTrigger = false;
-        }
+        PhotonNetwork.Instantiate(Path.Combine("Particles", splashPrefab.name), new Vector3(0, 3.3f, 0), Quaternion.Euler(-90, 0, 0));
+        score++;
+        scoreText.text = score.ToString();
+        _scoreController._gameState.ResetBall(_scoreController._gameState.num);
+        isAfterTrigger = true;
     }
 
     void CheckTimer()

@@ -81,14 +81,11 @@ public class GameState
     [PunRPC]
     public void ResetBall(int goLeft)
     {
-        _gameController.FindBall();
+        //Getting ball
+        _eventController._eventVoids.ball = _gameController.FindBall();
+        _ballController = _gameController._eventVoids.ball.GetComponent<BallController>();
 
-        GetPlayers();
-        foreach (GameObject player in players)
-        {
-            player.GetComponent<DoorController>().isBallPicked = false;
-        }
-
+        //Setting ball to start round
         _ballController.transform.position = new Vector2(0, 2.2f);
         _ballController.StopBall();
         _ballController.rgBody.AddForce(new Vector2(_ballController.startVector.x * goLeft, 0), ForceMode.Impulse);
@@ -103,13 +100,13 @@ public class GameState
             if (players[i].transform.parent) players[i].transform.parent = null;
         }
 
-        if (PhotonNetwork.CountOfPlayers == 1)
+        if (PhotonNetwork.IsMasterClient)
         {
             players[0].transform.position = new Vector2(-7, 0);
             players[0].transform.rotation = Quaternion.Euler(0, 90, 0);
         }
 
-        if (PhotonNetwork.CountOfPlayers == 2)
+        if (!PhotonNetwork.IsMasterClient)
         {
             players[1].transform.position = new Vector2(7, 0);
             players[1].transform.rotation = Quaternion.Euler(0, -90, 0);
@@ -141,11 +138,14 @@ public class GameState
     [PunRPC]
     public void ResetLevel()
     {
+        _gameController.ResetObjects();
+
         //Gate reset
         ResetGate();
 
-        //Reseting players positions and rotation
+        //Reseting players positions, rotation and doors
         ResetPlayers();
+        ResetDoors();
 
         //Reseting score
         _scoreController.scoreForPlayerOne = 0;
@@ -175,8 +175,8 @@ public class GameState
     [PunRPC]
     public void GameWin()
     {
-        _scoreController.PlayerOneWinnedMaps = 0;
-        _scoreController.PlayerTwoWinnedMaps = 0;
+        _scoreController.playerOneWinnedMaps = 0;
+        _scoreController.playerTwoWinnedMaps = 0;
         Cursor.visible = true;
 
         _gameWinMenu.OpenMenu();
@@ -185,16 +185,14 @@ public class GameState
     [PunRPC]
     public void RoundWin()
     {
+        //Cleaning scene
         _loadingScreen.StartCoroutine("Load_Start");
         _gameController.DestroyParticles();
-        ResetDoors();
         ResetLevel();
-        if (PhotonNetwork.IsMasterClient)
-        {
-            _eventController.DrawNumber();
-            _eventController.PickEvent();
-        }
-        _gameController.ResetObjects();
+
+        //Setting new round
+        _eventController.DrawNumber();
+        _eventController.PickEvent();
         _mapPicker.PickMap();
     }
 }

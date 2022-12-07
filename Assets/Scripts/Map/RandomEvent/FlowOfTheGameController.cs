@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using UnityEngine;
 using Photon.Pun;
 
@@ -10,15 +8,13 @@ public class FlowOfTheGameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        FindBall();
         FindGates();
         FindPlayers();
     }
 
-    public void FindBall()
+    public GameObject FindBall()
     {
-        _eventVoids.ball = GameObject.FindGameObjectWithTag("Ball");
-        _eventVoids._scoreController._gameState._ballController = _eventVoids.ball.GetComponent<BallController>();
+        return GameObject.FindGameObjectWithTag("Ball");
     }
 
     public void FindGates()
@@ -56,9 +52,7 @@ public class FlowOfTheGameController : MonoBehaviour
     public void ResetObjects()
     {
         FindPlayers();
-        FindGates();
-        FindBall();
-
+        
         //Reseting scale
         _eventVoids.ChangePlayersScale(0.6f);
         _eventVoids.ChangeBallScale(0.8f);
@@ -89,23 +83,26 @@ public class FlowOfTheGameController : MonoBehaviour
         }
     }
 
-    [PunRPC]
     public void GatesToSpawn(GameObject gateLeftName, GameObject gateRightName)
     {
         GameObject[] gatesToSpawn = new GameObject[2] { gateLeftName, gateRightName };
 
         for (int i = 0; i < _eventVoids.actualGates.Length; i++)
         {
-            PhotonNetwork.Destroy(_eventVoids.actualGates[i]);
-            PhotonNetwork.Instantiate(Path.Combine("Gates", gatesToSpawn[i].name), gatesToSpawn[i].transform.position, Quaternion.identity);
+            Destroy(_eventVoids.actualGates[i]);
+            Instantiate(gatesToSpawn[i], gatesToSpawn[i].transform.position, Quaternion.identity);
         }
     }
 
-    [PunRPC]
-    public void BallToSpawn(GameObject ballName)
+    public void BallToSpawn(GameObject ballToSpawn)
     {
-        PhotonNetwork.Destroy(_eventVoids.ball);
-        PhotonNetwork.Instantiate(Path.Combine("Balls", ballName.name), ballName.transform.position, Quaternion.identity);
+        GameObject[] allBalls = GameObject.FindGameObjectsWithTag("Ball");
+        foreach (GameObject singleBall in allBalls)
+        {
+            Destroy(singleBall);
+        }
+
+        Instantiate(ballToSpawn, ballToSpawn.transform.position, Quaternion.identity);
     }
 
     public void DestroyParticles()

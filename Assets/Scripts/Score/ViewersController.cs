@@ -15,7 +15,7 @@ public class ViewersController
 
     public void SpawnViewers()
     {
-        switch (_scoreController.PlayerOneWinnedMaps)
+        switch (_scoreController.playerOneWinnedMaps)
         {
             case 1:
                 for (int i = 0; i < blueLayer1.Length; i++)
@@ -39,7 +39,7 @@ public class ViewersController
                 break;
         }
 
-        switch (_scoreController.PlayerTwoWinnedMaps)
+        switch (_scoreController.playerTwoWinnedMaps)
         {
             case 1:
                 for (int i = 0; i < redLayer1.Length; i++)

@@ -20,7 +20,7 @@ public class RandomEventController : MonoBehaviour
 
         int num = (int)Mathf.Round(Random.Range(0, 3));
 
-        if (num == 2)
+        if (num == num)
         {
             randomNum = (int)Mathf.Round(Random.Range(1, 6));
         }
@@ -32,12 +32,10 @@ public class RandomEventController : MonoBehaviour
 
     public void PickEvent()
     {
-        if (!PhotonNetwork.IsMasterClient) return;
-
         switch (randomNum)
         {
             case 0:
-                _gameController.ResetObjects();
+                print("Nothing to change");
                 break;
 
             case 1:
@@ -47,71 +45,51 @@ public class RandomEventController : MonoBehaviour
                 {
                     //Making player or ball small
                     case 0:
-                        view.RPC("ChangePlayerBallScale", RpcTarget.AllBuffered, 0.3f, 0.8f);
+                        ChangePlayerBallScale(0.3f, 0.8f);
                         break;
 
                     case 1:
-                        view.RPC("ChangePlayerBallScale", RpcTarget.AllBuffered, 0.6f, 0.4f);
+                        ChangePlayerBallScale(0.6f, 0.4f);
                         break;
 
                     case 2:
-                        view.RPC("ChangePlayerBallScale", RpcTarget.AllBuffered, 0.3f, 0.4f);
+                        ChangePlayerBallScale(0.3f, 0.4f);
                         break;
 
                     //Making player or ball big
                     case 3:
-                        view.RPC("ChangePlayerBallScale", RpcTarget.AllBuffered, 0.9f, 0.8f);
+                        ChangePlayerBallScale(0.9f, 0.8f);
                         break;
 
                     case 4:
-                        view.RPC("ChangePlayerBallScale", RpcTarget.AllBuffered, 0.6f, 1f);
+                        ChangePlayerBallScale(0.6f, 1f);
                         break;
 
                     case 5:
-                        view.RPC("ChangePlayerBallScale", RpcTarget.AllBuffered, 0.9f, 1f);
+                        ChangePlayerBallScale(0.9f, 1f);
                         break;
                 }
                 break;
 
             //Changing something in map
             case 2:
-                DestroyGatesBall(true, false);
                 _eventVoids.WoodenGates();
                 break;
 
             case 3:
-                DestroyGatesBall(true, true);
                 _eventVoids.ExplosiveMode();
                 break;
 
             case 4:
-                DestroyGatesBall(false, true);
                 _eventVoids.DiscoMode();
                 break;
 
             case 5:
-                DestroyGatesBall(true, false);
                 _eventVoids.BaketballGates();
                 break;
         }
 
         _gameController.SetGatesToParent();
-    }
-
-    public void DestroyGatesBall(bool gates, bool ball)
-    {
-        if (gates)
-        {
-            for (int i = 0; i < _eventVoids.actualGates.Length; i++)
-            {
-                PhotonNetwork.Destroy(_eventVoids.actualGates[i]);
-            }
-        }
-
-        if (ball)
-        {
-            PhotonNetwork.Destroy(_eventVoids.ball);
-        }
     }
 
     [PunRPC]

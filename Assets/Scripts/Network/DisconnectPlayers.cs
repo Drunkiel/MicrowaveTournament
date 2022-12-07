@@ -8,14 +8,10 @@ public class DisconnectPlayers : MonoBehaviour
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            if(PhotonNetwork.CountOfPlayers >= 2)
+            for (int i = 1; i < PhotonNetwork.CountOfPlayers; i++)
             {
-                GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
-
-                for (int i = 1; i < players.Length; i++)
-                {
-                    PhotonNetwork.CloseConnection(PhotonNetwork.PlayerList[i]);
-                }
+                print(PhotonNetwork.PlayerList[i]);
+                PhotonNetwork.CloseConnection(PhotonNetwork.PlayerList[i]);
             }
         }
 

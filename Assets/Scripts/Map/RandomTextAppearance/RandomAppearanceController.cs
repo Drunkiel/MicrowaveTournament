@@ -7,6 +7,7 @@ public class RandomAppearanceController : MonoBehaviour
     private float cooldown;
 
     public GameObject prefab;
+    public ScoreController _scoreController;
 
     PhotonView view;
 
@@ -19,16 +20,19 @@ public class RandomAppearanceController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (cooldown <= 0)
+        if(_scoreController.playerOneWinnedMaps >= 1 || _scoreController.playerTwoWinnedMaps >= 1)
         {
-            view.RPC("SpawnText", RpcTarget.AllBuffered);
+            if (cooldown <= 0)
+            {
+                view.RPC("SpawnText", RpcTarget.AllBuffered);
 
-            isBlueTeam = !isBlueTeam;
-            cooldown = Random.Range(5, 10);
-        }
-        else
-        {
-            cooldown -= Time.deltaTime;
+                isBlueTeam = !isBlueTeam;
+                cooldown = Random.Range(5, 10);
+            }
+            else
+            {
+                cooldown -= Time.deltaTime;
+            }
         }
     }
 
@@ -41,13 +45,13 @@ public class RandomAppearanceController : MonoBehaviour
         {
             viewers = GameObject.FindGameObjectsWithTag("Viewer_Blue");
 
-            if (viewers.Length > 0) Instantiate(prefab, new Vector3(-8, 0, 10), Quaternion.Euler(0, -25, 0), transform);
+            if (viewers.Length > 0 && _scoreController.playerOneWinnedMaps >= 1) Instantiate(prefab, new Vector3(-8, 0, 10), Quaternion.Euler(0, -25, 0), transform);
         }
         else
         {
             viewers = GameObject.FindGameObjectsWithTag("Viewer_Red");
 
-            if (viewers.Length > 0) Instantiate(prefab, new Vector3(8, 0, 10), Quaternion.Euler(0, 25, 0), transform);
+            if (viewers.Length > 0 && _scoreController.playerTwoWinnedMaps >= 1) Instantiate(prefab, new Vector3(8, 0, 10), Quaternion.Euler(0, 25, 0), transform);
         }
     }
 }

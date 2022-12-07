@@ -17,6 +17,7 @@ public class MapPicker : MonoBehaviour
 
         pickedMaps = new bool[allMaps.Length];
         Fill();
+        PickMap();
     }
 
     public void PickMap()

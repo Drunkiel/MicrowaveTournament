@@ -65,6 +65,8 @@ public class PlayerController : MonoBehaviourPunCallbacks
     void MovementSequence(int num1, int num2)
     {
         transform.Rotate(0.25f * rotateSpeed * num1, 0, 0);
+        /*transform.rotation = Quaternion.Euler(0.25f * rotateSpeed * num1, 0, 0);*/
+
         knockout = 1 * num2;
         rgBody.AddForce(new Vector2(knockout * moveForce, 0));
     }
@@ -97,7 +99,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     void CheckPlayer()
     {
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
+        if (PhotonNetwork.IsMasterClient)
         {
             playerOne = true;
         }

@@ -5,7 +5,7 @@ public class GameUIController : MonoBehaviour
 {
     public Toggle menuInfoToggle;
 #nullable enable
-    public GameObject menuInfoObject;
+    public GameObject? menuInfoObject;
 #nullable disable
 
     public void ChangeVisibility()

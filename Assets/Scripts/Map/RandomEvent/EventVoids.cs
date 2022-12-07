@@ -24,6 +24,11 @@ public class EventVoids : MonoBehaviour
     public FlowOfTheGameController _gameController;
     public ScoreController _scoreController;
 
+    void Start()
+    {
+        ball = _gameController.FindBall();
+    }
+
     public void ChangePlayersScale(float scale)
     {
         _gameController.FindPlayers();
@@ -36,31 +41,27 @@ public class EventVoids : MonoBehaviour
 
     public void ChangeBallScale(float scale)
     {
-        _gameController.FindBall();
+        ball = _gameController.FindBall();
 
         ball.transform.localScale = new Vector3(scale, scale, scale);
     }
 
-    [PunRPC]
     public void ExplosiveMode()
     {
         _gameController.BallToSpawn(explosiveBall);
         _gameController.GatesToSpawn(steelGates[0], steelGates[1]);
     }
 
-    [PunRPC]
     public void WoodenGates()
     {
         _gameController.GatesToSpawn(woodenGates[0], woodenGates[1]);
     }
 
-    [PunRPC]
     public void BaketballGates()
     {
         _gameController.GatesToSpawn(basketballGates[0], basketballGates[1]);
     }
 
-    [PunRPC]
     public void DiscoMode()
     {
         _gameController.BallToSpawn(discoBall);

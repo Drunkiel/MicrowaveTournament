@@ -9,7 +9,7 @@ public class WindController : MonoBehaviour
     public float windYSpeed;
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         players = GameObject.FindGameObjectsWithTag("Player");
         ball = GameObject.FindGameObjectWithTag("Ball").GetComponent<Rigidbody>();
@@ -21,7 +21,7 @@ public class WindController : MonoBehaviour
         {
             players[i].GetComponent<Rigidbody>().AddForce(new Vector2(windXSpeed * xMultiplier, windYSpeed * playerMultiplier));
         }
-
+        
         ball.AddForce(new Vector2(windXSpeed * xMultiplier, windYSpeed * ballMultiplier));
     }
 }

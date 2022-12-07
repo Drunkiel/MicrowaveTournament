@@ -5,14 +5,12 @@ using System.Collections;
 
 public class ScoreController : MonoBehaviourPunCallbacks
 {
-    public bool gameRunning;
-
     public int scoreForPlayerOne;
     public int scoreForPlayerTwo;
     public TMP_Text[] score;
 
-    public int PlayerOneWinnedMaps;
-    public int PlayerTwoWinnedMaps;
+    public int playerOneWinnedMaps;
+    public int playerTwoWinnedMaps;
 
     public GameObject goalParticle;
     public GameObject gameWinParticle;
@@ -40,7 +38,7 @@ public class ScoreController : MonoBehaviourPunCallbacks
         score[1].text = scoreForPlayerTwo.ToString();
 
         if (scoreForPlayerOne >= 4 || scoreForPlayerTwo >= 4) view.RPC("CheckRoundWinner", RpcTarget.AllBuffered);
-        if (PlayerOneWinnedMaps == 4 || PlayerTwoWinnedMaps == 4) view.RPC("CheckGameWinner", RpcTarget.AllBuffered);
+        if (playerOneWinnedMaps == 4 || playerTwoWinnedMaps == 4) view.RPC("CheckGameWinner", RpcTarget.AllBuffered);
     }
 
     [PunRPC]
@@ -51,7 +49,7 @@ public class ScoreController : MonoBehaviourPunCallbacks
             scoreForPlayerOne++;
             _gameState.num = -1;
             _spawnText.BlueScored();
-            _cameraController.BlueGoal();
+            if(scoreForPlayerOne < 4) _cameraController.BlueGoal();
             Instantiate(goalParticle, new Vector3(9, -1.7f, 0), Quaternion.Euler(0, 180, 0));
         }
         else
@@ -59,7 +57,7 @@ public class ScoreController : MonoBehaviourPunCallbacks
             scoreForPlayerTwo++;
             _gameState.num = 1;
             _spawnText.RedScored();
-            _cameraController.RedGoal();
+            if(scoreForPlayerTwo < 4) _cameraController.RedGoal();
             Instantiate(goalParticle, new Vector3(-9, -1.7f, 0), Quaternion.identity);
         }
 
@@ -85,13 +83,13 @@ public class ScoreController : MonoBehaviourPunCallbacks
         if (scoreForPlayerOne >= 4)
         {
             _gameState.num = -1;
-            PlayerOneWinnedMaps++;
+            playerOneWinnedMaps++;
         }
 
         if (scoreForPlayerTwo >= 4)
         {
             _gameState.num = 1;
-            PlayerTwoWinnedMaps++;
+            playerTwoWinnedMaps++;
         }
 
         view.RPC("SpawnViewers", RpcTarget.AllBuffered);
@@ -101,13 +99,13 @@ public class ScoreController : MonoBehaviourPunCallbacks
     [PunRPC]
     void CheckGameWinner()
     {
-        if (PlayerOneWinnedMaps == 4)
+        if (playerOneWinnedMaps == 4)
         {
             team.color = new Color32(15, 45, 144, 255);
             team.text = "Team blue";
         }
 
-        if (PlayerTwoWinnedMaps == 4)
+        if (playerTwoWinnedMaps == 4)
         {
             team.color = new Color32(144, 15, 16, 255);
             team.text = "Team red";

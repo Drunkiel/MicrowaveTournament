@@ -3,7 +3,6 @@ using Photon.Pun;
 
 public class WaitForPlayers : MonoBehaviour
 {
-    public bool isEnoughtPlayers;
     public GameObject UI;
 
     PhotonView view;
@@ -14,35 +13,27 @@ public class WaitForPlayers : MonoBehaviour
     void Start()
     {
         view = GetComponent<PhotonView>();
-        GetBall();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        if (PhotonNetwork.IsMasterClient)
         {
-            isEnoughtPlayers = true;
-        }
-        else
-        {
-            isEnoughtPlayers = false;
-        }
-
-        if (!isEnoughtPlayers)
-        {
-            view.RPC("StopTime", RpcTarget.AllBuffered);
-        }
-        else
-        {
-            view.RPC("StartTime", RpcTarget.AllBuffered);
+            if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+            {
+                view.RPC("StartTime", RpcTarget.AllBuffered);
+            }
+            else if(1 == 0)
+            {
+                view.RPC("StopTime", RpcTarget.AllBuffered);
+            }
         }
     }
 
     [PunRPC]
     void StopTime()
     {
-        GetBall();
         _ballController.StopBall();
         UI.SetActive(true);
     }
@@ -50,16 +41,9 @@ public class WaitForPlayers : MonoBehaviour
     [PunRPC]
     void StartTime()
     {
-        GetBall();
         UI.SetActive(false);
         _scoreController.ResetGateBallDoors();
         _ballController.FirstRound();
         Destroy(GetComponent<WaitForPlayers>());
-    }
-
-    void GetBall()
-    {
-        _gameController.FindBall();
-        _ballController = _gameController._eventVoids.ball.GetComponent<BallController>();
     }
 }

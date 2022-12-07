@@ -5,6 +5,7 @@ public class GoalController : MonoBehaviour
 {
     public bool trigger;
     public bool isGoal;
+    public bool goalBreak;
     public bool isRightSide;
 
     ScoreController _scoreController;
@@ -26,17 +27,19 @@ public class GoalController : MonoBehaviour
         {
             view.RPC("Goal", RpcTarget.AllBuffered);
             isGoal = true;
+            goalBreak = true;
         }
 
         if (!trigger)
         {
             isGoal = false;
+            goalBreak = false;
         }
     }
 
     [PunRPC]
     void Goal()
     {
-        _scoreController.AddPoints(isRightSide);
+        if(!goalBreak) _scoreController.AddPoints(isRightSide);
     }
 }
