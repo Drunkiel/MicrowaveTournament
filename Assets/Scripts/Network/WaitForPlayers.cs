@@ -6,7 +6,7 @@ public class WaitForPlayers : MonoBehaviour
     public GameObject UI;
 
     PhotonView view;
-    BallController _ballController;
+    public BallController _ballController;
     public ScoreController _scoreController;
     public FlowOfTheGameController _gameController;
 
@@ -24,7 +24,7 @@ public class WaitForPlayers : MonoBehaviour
             {
                 view.RPC("StartTime", RpcTarget.AllBuffered);
             }
-            else if(1 == 0)
+            else /*if(1 == 0)*/
             {
                 view.RPC("StopTime", RpcTarget.AllBuffered);
             }

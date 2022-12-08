@@ -1,5 +1,6 @@
 using UnityEngine;
 using Photon.Pun;
+using System.IO;
 
 public class FlowOfTheGameController : MonoBehaviour
 {
@@ -86,11 +87,16 @@ public class FlowOfTheGameController : MonoBehaviour
     public void GatesToSpawn(GameObject gateLeftName, GameObject gateRightName)
     {
         GameObject[] gatesToSpawn = new GameObject[2] { gateLeftName, gateRightName };
+        GameObject[] allGates = GameObject.FindGameObjectsWithTag("Gate");
+
+        foreach (GameObject singleGate in allGates)
+        {
+            Destroy(singleGate);
+        }
 
         for (int i = 0; i < _eventVoids.actualGates.Length; i++)
         {
-            Destroy(_eventVoids.actualGates[i]);
-            Instantiate(gatesToSpawn[i], gatesToSpawn[i].transform.position, Quaternion.identity);
+            PhotonNetwork.Instantiate(Path.Combine("Gates", gatesToSpawn[i].name), gatesToSpawn[i].transform.position, Quaternion.identity);
         }
     }
 
@@ -101,8 +107,8 @@ public class FlowOfTheGameController : MonoBehaviour
         {
             Destroy(singleBall);
         }
-
-        Instantiate(ballToSpawn, ballToSpawn.transform.position, Quaternion.identity);
+        
+        PhotonNetwork.Instantiate(Path.Combine("Balls", ballToSpawn.name), ballToSpawn.transform.position, Quaternion.identity);
     }
 
     public void DestroyParticles()
