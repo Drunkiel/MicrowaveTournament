@@ -26,29 +26,16 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
     {
         string clientPassword = joinField.text.Trim();
 
-        if (joinField.text != "" && clientPassword.Length >= 2) PhotonNetwork.JoinRoom(clientPassword);
+        if (joinField.text != "" && clientPassword.Length == 5) PhotonNetwork.JoinRoom(clientPassword);
         else _issuesController.ShowIssue("Warning: check if your code is the same as host code");
     }
 
-    public override void OnJoinedRoom()
+    public void CopyPassword()
     {
-        PhotonNetwork.LoadLevel("Main");
-    }
-
-    public override void OnCreateRoomFailed(short returnCode, string message)
-    {
-        _issuesController.ShowIssue("Error: " + returnCode + "; " + message);
-        ResetPassword();
-    }
-
-    public override void OnJoinRoomFailed(short returnCode, string message)
-    {
-        _issuesController.ShowIssue("Error: " + returnCode + "; " + message);
-    }
-
-    public void QuitButton()
-    {
-        Application.Quit();
+        TextEditor te = new TextEditor();
+        te.text = password;
+        te.SelectAll();
+        te.Copy();
     }
 
     void ResetPassword()
@@ -70,5 +57,26 @@ public class CreateAndJoinRooms : MonoBehaviourPunCallbacks
 
         var finalString = new string(stringChars);
         return finalString;
+    }
+
+    public void QuitButton()
+    {
+        Application.Quit();
+    }
+
+    public override void OnJoinedRoom()
+    {
+        PhotonNetwork.LoadLevel("Main");
+    }
+
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        _issuesController.ShowIssue("Error: " + returnCode + "; " + message);
+        ResetPassword();
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        _issuesController.ShowIssue("Error: " + returnCode + "; " + message);
     }
 }
