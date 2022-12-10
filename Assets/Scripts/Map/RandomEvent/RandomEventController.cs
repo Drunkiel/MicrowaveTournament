@@ -5,24 +5,22 @@ public class RandomEventController : MonoBehaviour
 {
     public int randomNum;
 
-    PhotonView view;
     public EventVoids _eventVoids;
     public FlowOfTheGameController _gameController;
 
     void Start()
     {
-        view = GetComponent<PhotonView>();
+        if (!PhotonNetwork.IsMasterClient) Destroy(GetComponent<RandomEventController>());
     }
 
     public void DrawNumber()
     {
-        if (!PhotonNetwork.IsMasterClient) return;
-
         int num = (int)Mathf.Round(Random.Range(0, 3));
 
         if (num == num)
         {
             randomNum = (int)Mathf.Round(Random.Range(1, 6));
+            randomNum = 1;
         }
         else
         {
@@ -95,7 +93,7 @@ public class RandomEventController : MonoBehaviour
     [PunRPC]
     void ChangePlayerBallScale(float playerScale, float ballScale)
     {
-        _eventVoids.ChangePlayersScale(playerScale);
+        _eventVoids.ChangePlayersScale(playerScale); 
         _eventVoids.ChangeBallScale(ballScale);
     }
 }

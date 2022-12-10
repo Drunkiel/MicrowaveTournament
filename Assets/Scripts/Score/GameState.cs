@@ -1,5 +1,5 @@
-using UnityEngine;
 using Photon.Pun;
+using UnityEngine;
 
 [System.Serializable]
 public class GameState
@@ -100,13 +100,10 @@ public class GameState
             if (players[i].transform.parent) players[i].transform.parent = null;
         }
 
-        if (PhotonNetwork.IsMasterClient)
-        {
-            players[0].transform.position = new Vector2(-7, 0);
-            players[0].transform.rotation = Quaternion.Euler(0, 90, 0);
-        }
+        players[0].transform.position = new Vector2(-7, 0);
+        players[0].transform.rotation = Quaternion.Euler(0, 90, 0);
 
-        if (!PhotonNetwork.IsMasterClient)
+        if (players.Length > 1)
         {
             players[1].transform.position = new Vector2(7, 0);
             players[1].transform.rotation = Quaternion.Euler(0, -90, 0);
@@ -138,6 +135,12 @@ public class GameState
     [PunRPC]
     public void ResetLevel()
     {
+        //Reseting score
+        _scoreController.scoreForPlayerOne = 0;
+        _scoreController.scoreForPlayerTwo = 0;
+
+        if (!PhotonNetwork.IsMasterClient) return;
+
         _gameController.ResetObjects();
 
         //Gate reset
@@ -146,10 +149,6 @@ public class GameState
         //Reseting players positions, rotation and doors
         ResetPlayers();
         ResetDoors();
-
-        //Reseting score
-        _scoreController.scoreForPlayerOne = 0;
-        _scoreController.scoreForPlayerTwo = 0;
 
         //Reseting ball
         ResetBall(num);
@@ -191,8 +190,11 @@ public class GameState
         ResetLevel();
 
         //Setting new round
-        _eventController.DrawNumber();
-        _eventController.PickEvent();
-        _mapPicker.PickMap();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            _eventController.DrawNumber();
+            _eventController.PickEvent();
+            _mapPicker.PickMap();
+        }
     }
 }

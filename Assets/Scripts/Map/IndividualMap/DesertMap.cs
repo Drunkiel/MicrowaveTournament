@@ -71,11 +71,11 @@ public class DesertMap : MonoBehaviour
 
     void WindAnimation()
     {
-        if (multiplier == 1 && windParticle.transform.position.x <= 0 && !isParticle)
+        if (multiplier == 1 && !isParticle)
         {
             CreateParticle(multiplier, multiplier);
         }
-        else if (multiplier == -1 && windParticle.transform.position.x <= 0 && !isParticle)
+        else if (multiplier == -1 && !isParticle)
         {
             CreateParticle(-multiplier, multiplier);
         }

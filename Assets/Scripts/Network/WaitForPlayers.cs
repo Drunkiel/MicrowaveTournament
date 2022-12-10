@@ -1,5 +1,5 @@
-using UnityEngine;
 using Photon.Pun;
+using UnityEngine;
 
 public class WaitForPlayers : MonoBehaviour
 {
@@ -24,7 +24,7 @@ public class WaitForPlayers : MonoBehaviour
             {
                 view.RPC("StartTime", RpcTarget.AllBuffered);
             }
-            else /*if(1 == 0)*/
+            else if (1 == 0)
             {
                 view.RPC("StopTime", RpcTarget.AllBuffered);
             }

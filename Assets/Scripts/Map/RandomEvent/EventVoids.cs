@@ -1,5 +1,4 @@
 using UnityEngine;
-using Photon.Pun;
 
 public class EventVoids : MonoBehaviour
 {
@@ -31,11 +30,11 @@ public class EventVoids : MonoBehaviour
 
     public void ChangePlayersScale(float scale)
     {
-        _gameController.FindPlayers();
+        GameObject[] allPlayers = GameObject.FindGameObjectsWithTag("Player");
 
-        foreach (GameObject player in players)
+        foreach (GameObject singlePlayer in allPlayers)
         {
-            player.transform.localScale = new Vector3(scale, scale, scale);
+            singlePlayer.transform.localScale = new Vector3(scale, scale, scale);
         }
     }
 

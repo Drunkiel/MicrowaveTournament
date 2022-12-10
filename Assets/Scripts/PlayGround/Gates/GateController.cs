@@ -8,12 +8,7 @@ public class GateController : MonoBehaviour
     public bool[] steps;
     public int actualStep;
 
-    Animator anim;
-
-    void Start()
-    {
-        anim = GetComponent<Animator>(); 
-    }
+    public Animator anim;
 
     // Update is called once per frame
     void Update()

@@ -18,6 +18,7 @@ public class TiltMap : MonoBehaviour
     void Start()
     {
         if (!PhotonNetwork.IsMasterClient) Destroy(GetComponent<TiltMap>());
+
         view = GetComponent<PhotonView>();
         anim = GetComponent<Animator>();
     }
@@ -54,8 +55,6 @@ public class TiltMap : MonoBehaviour
     [PunRPC]
     void Lift()
     {
-        if (!PhotonNetwork.IsMasterClient) return;
-
         ChangeDirectionToLift();
 
         if (timeToReverse)

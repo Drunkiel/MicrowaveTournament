@@ -91,7 +91,7 @@ public class FlowOfTheGameController : MonoBehaviour
 
         foreach (GameObject singleGate in allGates)
         {
-            Destroy(singleGate);
+            PhotonNetwork.Destroy(singleGate);
         }
 
         for (int i = 0; i < _eventVoids.actualGates.Length; i++)
@@ -103,9 +103,10 @@ public class FlowOfTheGameController : MonoBehaviour
     public void BallToSpawn(GameObject ballToSpawn)
     {
         GameObject[] allBalls = GameObject.FindGameObjectsWithTag("Ball");
+
         foreach (GameObject singleBall in allBalls)
         {
-            Destroy(singleBall);
+            PhotonNetwork.Destroy(singleBall);
         }
         
         PhotonNetwork.Instantiate(Path.Combine("Balls", ballToSpawn.name), ballToSpawn.transform.position, Quaternion.identity);
