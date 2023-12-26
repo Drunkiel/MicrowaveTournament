@@ -7,23 +7,14 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private float jumpForce;
     [SerializeField] private Rigidbody rgBody;
 
-    private bool isPlayerOne = true;
+    [SerializeField] private bool isPlayerOne = true;
     public bool onTheGround;
 
-    private void Start()
-    {
-        if (!IsOwner) return;
-        PlayersCountServerRpc();
-    }
+    [SerializeField] private PlayerInitialization _playerInitialization;
 
-    [ServerRpc(RequireOwnership = false)]
-    private void PlayersCountServerRpc()
+    public override void OnNetworkSpawn()
     {
-        if (NetworkManager.ConnectedClientsIds.Count > 1)
-        {
-            isPlayerOne = false;
-            RotatePlayer();
-        }
+        if (IsClient) RotatePlayer();
     }
 
     private void Update()
@@ -41,9 +32,9 @@ public class PlayerController : NetworkBehaviour
 
     private void Movement()
     {
-        if (Input.GetKey(KeyCode.A) && !onTheGround) MovementSequence(isPlayerOne ? 1 : -1);
+        if (Input.GetKey(KeyCode.A) && !onTheGround) MovementSequence(IsHost ? 1 : -1);
 
-        if (Input.GetKey(KeyCode.D) && !onTheGround) MovementSequence(isPlayerOne ? -1 : 1);
+        if (Input.GetKey(KeyCode.D) && !onTheGround) MovementSequence(IsHost ? -1 : 1);
     }
 
     private void MovementSequence(int a)

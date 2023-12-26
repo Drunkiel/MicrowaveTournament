@@ -266,6 +266,7 @@ GameObject:
   - component: {fileID: 3317899240923763057}
   - component: {fileID: 2107884895516034457}
   - component: {fileID: 3854943181709741462}
+  - component: {fileID: 2765365402538480008}
   - component: {fileID: 7626760270125644532}
   - component: {fileID: 7226443667472127444}
   - component: {fileID: -8404768477146607022}
@@ -355,7 +356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3770383058
+  GlobalObjectIdHash: 2926365816
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -363,6 +364,19 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &2765365402538480008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9222730414134665306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf49e2b02ab132b4cb23640823bf7ea1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerIndex: 0
 --- !u!114 &7626760270125644532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,6 +393,7 @@ MonoBehaviour:
   jumpForce: 400
   rgBody: {fileID: 3317899240923763057}
   onTheGround: 0
+  _playerInitialization: {fileID: 2765365402538480008}
 --- !u!114 &7226443667472127444
 MonoBehaviour:
   m_ObjectHideFlags: 0
